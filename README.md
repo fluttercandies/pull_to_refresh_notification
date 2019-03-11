@@ -9,7 +9,7 @@ widget to build  pull to refresh effects.
 # Sample 1 appbar
 build appbar to pull to refresh with PullToRefreshContainer
 
-![](https://github.com/zmtzawqlp/Flutter/blob/master/gif/PullToRefreshAppbar.gif)
+![](https://github.com/fluttercandies/Flutter_Candies/tree/master/gif/pull_to_refresh/appbar.gif)
 ```dart
    Widget build(BuildContext context) {
  return PullToRefreshNotification(
@@ -80,7 +80,7 @@ build appbar to pull to refresh with PullToRefreshContainer
 build header to pull to refresh with PullToRefreshContainer.
 and you can easy to handle the status in pulling.
 
-![](https://github.com/zmtzawqlp/Flutter/blob/master/gif/PullToRefreshHeader.gif)
+![](https://github.com/fluttercandies/Flutter_Candies/tree/master/gif/pull_to_refresh/header.gif)
 ```dart
   Widget build(BuildContext context) {
     return PullToRefreshNotification(
@@ -202,7 +202,7 @@ and you can easy to handle the status in pulling.
 # Sample 3 image
 build zoom image to pull to refresh with using PullToRefreshContainer.
 
-![](https://github.com/zmtzawqlp/Flutter/blob/master/gif/PullToRefreshImage.gif)
+![](https://github.com/fluttercandies/Flutter_Candies/tree/master/gif/pull_to_refresh/image.gif)
 ```dart
  Widget build(BuildContext context) {
      // TODO: implement build
