@@ -12,7 +12,8 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return PullToRefreshNotification(
+    return Material(
+        child: PullToRefreshNotification(
       color: Colors.blue,
       pullBackOnRefresh: true,
       onRefresh: onRefresh,
@@ -28,7 +29,9 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
                   children: <Widget>[
                     Text(
                       "List item : ${listlength - index}",
-                      style: TextStyle(fontSize: 15.0, inherit: false),
+                      style: TextStyle(
+                        fontSize: 15.0,
+                      ),
                     ),
                     Divider(
                       color: Colors.grey,
@@ -39,7 +42,7 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
           }, childCount: listlength)),
         ],
       ),
-    );
+    ));
   }
 
   Widget buildPulltoRefreshAppbar(PullToRefreshScrollNotificationInfo info) {
