@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:example/push_to_refresh_header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
@@ -10,40 +11,48 @@ class PullToRefreshHeader extends StatefulWidget {
 
 class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
   int listlength = 50;
+  DateTime dateTimeNow = DateTime.now();
   @override
   Widget build(BuildContext context) {
-    return PullToRefreshNotification(
-      color: Colors.blue,
-      onRefresh: onRefresh,
-      maxDragOffset: 200.0,
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            pinned: true,
-            title: Text("PullToRefreshHeader"),
-          ),
-          PullToRefreshContainer(buildPulltoRefreshHeader),
-          SliverList(
-              delegate:
-                  SliverChildBuilderDelegate((BuildContext context, int index) {
-            return Container(
-                padding: EdgeInsets.only(bottom: 4.0),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "List item : ${listlength - index}",
-                      style: TextStyle(fontSize: 15.0, inherit: false),
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                      height: 2.0,
-                    )
-                  ],
-                ));
-          }, childCount: listlength)),
-        ],
+    return Material(
+      child: PullToRefreshNotification(
+        color: Colors.blue,
+        onRefresh: onRefresh,
+        maxDragOffset: maxDragOffset,
+        armedDragUpCancel: false,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              pinned: true,
+              title: Text("PullToRefreshHeader"),
+            ),
+            PullToRefreshContainer(buildPulltoRefreshHeader),
+            SliverList(
+                delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+              return Container(
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "List item : ${listlength - index}",
+                        style: TextStyle(
+                          fontSize: 15.0,
+                        ),
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                        height: 2.0,
+                      )
+                    ],
+                  ));
+            }, childCount: listlength)),
+          ],
+        ),
       ),
     );
+
+    ;
   }
 
   Widget buildPulltoRefreshHeader(PullToRefreshScrollNotificationInfo info) {
@@ -77,33 +86,34 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
               padding: EdgeInsets.only(left: 5.0),
               alignment: Alignment.center,
               child: Text(
-                mode?.toString()??"" + "  click to retry" ?? "",
+                "error, click to retry",
                 style: TextStyle(fontSize: 12.0, inherit: false),
               ),
             ),
           ));
     } else {
-      child = Container(
-        color: Colors.grey,
-        alignment: Alignment.bottomCenter,
-        height: offset,
-        width: double.infinity,
-        //padding: EdgeInsets.only(top: offset),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            refreshWiget,
-            Container(
-              padding: EdgeInsets.only(left: 5.0),
-              alignment: Alignment.center,
-              child: Text(
-                mode?.toString() ?? "",
-                style: TextStyle(fontSize: 12.0, inherit: false),
-              ),
-            )
-          ],
-        ),
-      );
+      child = PullToRefreshHeaderWidget(info, dateTimeNow);
+//      child = Container(
+//        color: Colors.grey,
+//        alignment: Alignment.bottomCenter,
+//        height: offset,
+//        width: double.infinity,
+//        //padding: EdgeInsets.only(top: offset),
+//        child: Row(
+//          mainAxisAlignment: MainAxisAlignment.center,
+//          children: <Widget>[
+//            refreshWiget,
+//            Container(
+//              padding: EdgeInsets.only(left: 5.0),
+//              alignment: Alignment.center,
+//              child: Text(
+//                mode?.toString() ?? "",
+//                style: TextStyle(fontSize: 12.0, inherit: false),
+//              ),
+//            )
+//          ],
+//        ),
+//      );
     }
 
     return SliverToBoxAdapter(
@@ -121,6 +131,7 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
     return completer.future.then((bool success) {
       if (success) {
         setState(() {
+          dateTimeNow = DateTime.now();
           listlength += 10;
         });
       }

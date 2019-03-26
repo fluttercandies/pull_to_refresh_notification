@@ -13,37 +13,41 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return PullToRefreshNotification(
-      color: Colors.blue,
-      pullBackOnRefresh: true,
-      onRefresh: onRefresh,
-      child: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            title: Text("PullToRefreshImage"),
-          ),
-          PullToRefreshContainer(buildPulltoRefreshImage),
-          SliverList(
-              delegate:
-                  SliverChildBuilderDelegate((BuildContext context, int index) {
-            return Container(
-                padding: EdgeInsets.only(bottom: 4.0),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "List item : ${listlength - index}",
-                      style: TextStyle(fontSize: 15.0, inherit: false),
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                      height: 2.0,
-                    )
-                  ],
-                ));
-          }, childCount: listlength)),
-        ],
+
+    return Material(
+      child: PullToRefreshNotification(
+        color: Colors.blue,
+        pullBackOnRefresh: true,
+        onRefresh: onRefresh,
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              title: Text("PullToRefreshImage"),
+            ),
+            PullToRefreshContainer(buildPulltoRefreshImage),
+            SliverList(
+                delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+              return Container(
+                  padding: EdgeInsets.only(bottom: 4.0),
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        "List item : ${listlength - index}",
+                        style: TextStyle(fontSize: 15.0),
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                        height: 2.0,
+                      )
+                    ],
+                  ));
+            }, childCount: listlength)),
+          ],
+        ),
       ),
     );
+    ;
   }
 
   Widget buildPulltoRefreshImage(PullToRefreshScrollNotificationInfo info) {

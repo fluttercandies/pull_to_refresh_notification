@@ -1,8 +1,8 @@
-
 import 'package:example/pull_to_refresh_appbar.dart';
 import 'package:example/pull_to_refresh_header.dart';
 import 'package:example/pull_to_refresh_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() => runApp(MyApp());
 
@@ -52,51 +52,63 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
-    return ListView.builder(
-      itemBuilder: (_, int index) {
-        var page = pages[index];
-        var pageWidget;
-        return Container(
-          margin: EdgeInsets.all(20.0),
-          child: GestureDetector(
-            behavior: HitTestBehavior.translucent,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  (index + 1).toString() +
-                      "." +
-                      page.type.toString().replaceAll("PageType.", ""),
-                  style: TextStyle(inherit: false),
-                ),
-                Text(
-                  page.description,
-                  style: TextStyle(inherit: false, color: Colors.grey),
-                )
-              ],
-            ),
-            onTap: () {
-              switch (page.type) {
-                case PageType.PullToRefreshAppbar:
-                  pageWidget = new PullToRefreshAppbar();
-                  break;
-                case PageType.PullToRefreshHeader:
-                  pageWidget = new PullToRefreshHeader();
-                  break;
-                case PageType.PullToRefreshImage:
-                  pageWidget = new PullToRefreshImage();
-                  break;
-              }
-              Navigator.push(context,
-                  new MaterialPageRoute(builder: (BuildContext context) {
-                return pageWidget;
-              }));
-            },
+    return MaterialApp(
+      builder: (c, w) {
+        ScreenUtil.instance =
+            ScreenUtil(width: 750, height: 1334, allowFontScaling: true)
+              ..init(c);
+        var data = MediaQuery.of(context);
+        return MediaQuery(
+          data: data.copyWith(textScaleFactor: 1.0),
+          child: Scaffold(
+            body: w,
           ),
         );
       },
-      itemCount: pages.length,
+      home: ListView.builder(
+        itemBuilder: (_, int index) {
+          var page = pages[index];
+          var pageWidget;
+          return Container(
+            margin: EdgeInsets.all(20.0),
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    (index + 1).toString() +
+                        "." +
+                        page.type.toString().replaceAll("PageType.", ""),
+                  ),
+                  Text(
+                    page.description,
+                    style: TextStyle(color: Colors.grey),
+                  )
+                ],
+              ),
+              onTap: () {
+                switch (page.type) {
+                  case PageType.PullToRefreshAppbar:
+                    pageWidget = new PullToRefreshAppbar();
+                    break;
+                  case PageType.PullToRefreshHeader:
+                    pageWidget = new PullToRefreshHeader();
+                    break;
+                  case PageType.PullToRefreshImage:
+                    pageWidget = new PullToRefreshImage();
+                    break;
+                }
+                Navigator.push(context,
+                    new MaterialPageRoute(builder: (BuildContext context) {
+                  return pageWidget;
+                }));
+              },
+            ),
+          );
+        },
+        itemCount: pages.length,
+      ),
     );
   }
 }
