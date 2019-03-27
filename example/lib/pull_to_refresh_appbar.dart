@@ -18,6 +18,7 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
       pullBackOnRefresh: true,
       onRefresh: onRefresh,
       child: CustomScrollView(
+        physics: ClampingScrollPhysics(),
         slivers: <Widget>[
           PullToRefreshContainer(buildPulltoRefreshAppbar),
           SliverList(

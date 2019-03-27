@@ -1,4 +1,4 @@
-## [0.1.9]
+## [0.2.0]
 
 * add armedDragUpCancel property.
   //Dragged far enough that an up event will run the onRefresh callback.

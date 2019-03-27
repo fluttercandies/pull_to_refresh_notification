@@ -21,6 +21,7 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
         maxDragOffset: maxDragOffset,
         armedDragUpCancel: false,
         child: CustomScrollView(
+          physics: ClampingScrollPhysics(),
           slivers: <Widget>[
             SliverAppBar(
               pinned: true,
