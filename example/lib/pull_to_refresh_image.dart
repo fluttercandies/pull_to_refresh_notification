@@ -20,7 +20,7 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
         pullBackOnRefresh: true,
         onRefresh: onRefresh,
         child: CustomScrollView(
-          physics: ClampingScrollPhysics(),
+          physics: AlwaysScrollableClampingScrollPhysics(),
           slivers: <Widget>[
             SliverAppBar(
               title: Text("PullToRefreshImage"),

@@ -1,3 +1,7 @@
+## [0.2.1]
+
+* add AlwaysScrollableClampingScrollPhysics in case list is not full screen and remove ios Bouncing.
+
 ## [0.2.0]
 
 * add armedDragUpCancel property.
