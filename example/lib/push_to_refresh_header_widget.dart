@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
+import 'package:pull_to_refresh_notification/src/pull_to_refresh_notification.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui show Image;
 
@@ -100,7 +100,7 @@ class RefreshImage extends StatelessWidget {
       "assets/flutterCandies_grey.png",
       width: imageSize,
       height: imageSize,
-      afterPaintImage: (Canvas canvas, Rect rect, ui.Image image) {
+      afterPaintImage: (Canvas canvas, Rect rect, ui.Image image, Paint paint) {
         final double imageHeight = image.height.toDouble();
         final double imageWidth = image.width.toDouble();
         final Size size = rect.size;
