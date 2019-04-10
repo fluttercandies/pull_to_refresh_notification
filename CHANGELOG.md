@@ -1,4 +1,4 @@
-## [0.2.1]
+## [0.2.2]
 
 * add AlwaysScrollableClampingScrollPhysics in case list is not full screen and remove ios Bouncing.
 

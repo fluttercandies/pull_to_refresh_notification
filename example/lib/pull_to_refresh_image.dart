@@ -48,7 +48,6 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
         ),
       ),
     );
-    ;
   }
 
   Widget buildPulltoRefreshImage(PullToRefreshScrollNotificationInfo info) {

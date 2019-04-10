@@ -52,8 +52,6 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
         ),
       ),
     );
-
-    ;
   }
 
   Widget buildPulltoRefreshHeader(PullToRefreshScrollNotificationInfo info) {
@@ -62,13 +60,6 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
 //    print("------------");
     var offset = info?.dragOffset ?? 0.0;
     var mode = info?.mode;
-    Widget refreshWiget = Container();
-    //it should more than 18, so that RefreshProgressIndicator can be shown fully
-    if (info?.refreshWiget != null &&
-        offset > 18.0 &&
-        mode != RefreshIndicatorMode.error) {
-      refreshWiget = info.refreshWiget;
-    }
 
     Widget child;
     if (mode == RefreshIndicatorMode.error) {
