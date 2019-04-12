@@ -12,46 +12,63 @@ class PullToRefreshHeader extends StatefulWidget {
 class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
   int listlength = 50;
   DateTime dateTimeNow = DateTime.now();
+  final GlobalKey<PullToRefreshNotificationState> key =
+      new GlobalKey<PullToRefreshNotificationState>();
+
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: PullToRefreshNotification(
-        color: Colors.blue,
-        onRefresh: onRefresh,
-        maxDragOffset: maxDragOffset,
-        armedDragUpCancel: false,
-        child: CustomScrollView(
-          physics: AlwaysScrollableClampingScrollPhysics(),
-          slivers: <Widget>[
-            SliverAppBar(
-              pinned: true,
-              title: Text("PullToRefreshHeader"),
-            ),
-            PullToRefreshContainer(buildPulltoRefreshHeader),
-            SliverList(
-                delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-              return Container(
-                  padding: EdgeInsets.only(bottom: 4.0),
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        "List item : ${listlength - index}",
-                        style: TextStyle(
-                          fontSize: 15.0,
+        child: Stack(
+      children: <Widget>[
+        PullToRefreshNotification(
+          color: Colors.blue,
+          onRefresh: onRefresh,
+          maxDragOffset: maxDragOffset,
+          armedDragUpCancel: false,
+          key: key,
+          child: CustomScrollView(
+            physics: AlwaysScrollableClampingScrollPhysics(),
+            slivers: <Widget>[
+              SliverAppBar(
+                pinned: true,
+                title: Text("PullToRefreshHeader"),
+              ),
+              PullToRefreshContainer(buildPulltoRefreshHeader),
+              SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                return Container(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          "List item : ${listlength - index}",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          ),
                         ),
-                      ),
-                      Divider(
-                        color: Colors.grey,
-                        height: 2.0,
-                      )
-                    ],
-                  ));
-            }, childCount: listlength)),
-          ],
+                        Divider(
+                          color: Colors.grey,
+                          height: 2.0,
+                        )
+                      ],
+                    ));
+              }, childCount: listlength)),
+            ],
+          ),
         ),
-      ),
-    );
+        Positioned(
+          right: 20.0,
+          bottom: 20.0,
+          child: FloatingActionButton(
+            child: Icon(Icons.refresh),
+            onPressed: () {
+              key.currentState.show(notificationDragOffset: maxDragOffset);
+            },
+          ),
+        )
+      ],
+    ));
   }
 
   Widget buildPulltoRefreshHeader(PullToRefreshScrollNotificationInfo info) {

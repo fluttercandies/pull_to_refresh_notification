@@ -8,41 +8,59 @@ class PullToRefreshAppbar extends StatefulWidget {
 }
 
 class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
+  final GlobalKey<PullToRefreshNotificationState> key =
+      new GlobalKey<PullToRefreshNotificationState>();
+
   int listlength = 50;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Material(
-        child: PullToRefreshNotification(
-      color: Colors.blue,
-      pullBackOnRefresh: true,
-      onRefresh: onRefresh,
-      child: CustomScrollView(
-        physics: AlwaysScrollableClampingScrollPhysics(),
-        slivers: <Widget>[
-          PullToRefreshContainer(buildPulltoRefreshAppbar),
-          SliverList(
-              delegate:
-                  SliverChildBuilderDelegate((BuildContext context, int index) {
-            return Container(
-                padding: EdgeInsets.only(bottom: 4.0),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      "List item : ${listlength - index}",
-                      style: TextStyle(
-                        fontSize: 15.0,
-                      ),
-                    ),
-                    Divider(
-                      color: Colors.grey,
-                      height: 2.0,
-                    )
-                  ],
-                ));
-          }, childCount: listlength)),
-        ],
-      ),
+        child: Stack(
+      children: <Widget>[
+        PullToRefreshNotification(
+          color: Colors.blue,
+          pullBackOnRefresh: true,
+          onRefresh: onRefresh,
+          key: key,
+          child: CustomScrollView(
+            physics: AlwaysScrollableClampingScrollPhysics(),
+            slivers: <Widget>[
+              PullToRefreshContainer(buildPulltoRefreshAppbar),
+              SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                return Container(
+                    padding: EdgeInsets.only(bottom: 4.0),
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          "List item : ${listlength - index}",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                          ),
+                        ),
+                        Divider(
+                          color: Colors.grey,
+                          height: 2.0,
+                        )
+                      ],
+                    ));
+              }, childCount: listlength)),
+            ],
+          ),
+        ),
+        Positioned(
+          right: 20.0,
+          bottom: 20.0,
+          child: FloatingActionButton(
+            child: Icon(Icons.refresh),
+            onPressed: () {
+              key.currentState.show();
+            },
+          ),
+        )
+      ],
     ));
   }
 

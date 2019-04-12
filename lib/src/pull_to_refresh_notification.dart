@@ -409,11 +409,14 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   /// When initiated in this manner, the refresh indicator is independent of any
   /// actual scroll view. It defaults to showing the indicator at the top. To
   /// show it at the bottom, set `atTop` to false.
-  Future<void> show({bool atTop = true}) {
+  Future<void> show({bool atTop = true, double notificationDragOffset}) {
     if (_refreshIndicatorMode != RefreshIndicatorMode.refresh &&
         _refreshIndicatorMode != RefreshIndicatorMode.snap) {
       if (_refreshIndicatorMode == null)
         _start(atTop ? AxisDirection.down : AxisDirection.up);
+      if (notificationDragOffset != null) {
+        _notificationDragOffset = notificationDragOffset;
+      }
       _show();
     }
     return _pendingRefreshFuture;
