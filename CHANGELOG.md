@@ -1,3 +1,9 @@
+## [0.2.4]
+
+* add notificationDragOffset parameter for show method in PullToRefreshNotificationState
+  it's used to change offset when call refresh by coding
+* show how to call refresh by coding
+
 ## [0.2.3]
 
 * add AlwaysScrollableClampingScrollPhysics in case list is not full screen and remove ios Bouncing.
