@@ -64,7 +64,7 @@ class PullToRefreshNotification extends StatefulWidget {
         super(key: key);
 
   //Dragged far enough that an up event will run the onRefresh callback.
-  //when use drag up,whether should cancel refresh
+  //then user drag up,whether should cancel refresh
   final bool armedDragUpCancel;
 
   /// The widget below this widget in the tree.
