@@ -1,3 +1,7 @@
+## [0.2.5]
+
+* fix issue that AlwaysScrollableClampingScrollPhysics is not working in new flutter version 
+
 ## [0.2.4]
 
 * add notificationDragOffset parameter for show method in PullToRefreshNotificationState

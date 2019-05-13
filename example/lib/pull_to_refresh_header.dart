@@ -27,6 +27,7 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
           armedDragUpCancel: false,
           key: key,
           child: CustomScrollView(
+            ///in case list is not full screen and remove ios Bouncing
             physics: AlwaysScrollableClampingScrollPhysics(),
             slivers: <Widget>[
               SliverAppBar(

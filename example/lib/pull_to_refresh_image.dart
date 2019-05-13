@@ -25,6 +25,7 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
             onRefresh: onRefresh,
             key: key,
             child: CustomScrollView(
+              ///in case list is not full screen and remove ios Bouncing
               physics: AlwaysScrollableClampingScrollPhysics(),
               slivers: <Widget>[
                 SliverAppBar(
