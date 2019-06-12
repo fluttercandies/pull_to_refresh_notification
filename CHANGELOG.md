@@ -1,4 +1,4 @@
-## [0.2.5]
+## [0.2.6]
 
 * fix issue that AlwaysScrollableClampingScrollPhysics is not working in new flutter version 
 
