@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -96,30 +95,10 @@ class RefreshImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double imageSize = ScreenUtil.getInstance().setWidth(80);
-    return ExtendedImage.asset(
+    return Image.asset(
       "assets/flutterCandies_grey.png",
       width: imageSize,
       height: imageSize,
-      afterPaintImage: (Canvas canvas, Rect rect, ui.Image image, Paint paint) {
-        final double imageHeight = image.height.toDouble();
-        final double imageWidth = image.width.toDouble();
-        final Size size = rect.size;
-        final double y =
-            (1 - min(top / (refreshHeight - hideHeight), 1)) * imageHeight;
-
-        canvas.drawImageRect(
-            image,
-            Rect.fromLTWH(0.0, y, imageWidth, imageHeight - y),
-            Rect.fromLTWH(rect.left, rect.top + y / imageHeight * size.height,
-                size.width, (imageHeight - y) / imageHeight * size.height),
-            Paint()
-              ..colorFilter =
-                  ColorFilter.mode(Color(0xFFea5504), BlendMode.srcIn)
-              ..isAntiAlias = false
-              ..filterQuality = FilterQuality.low);
-
-        //canvas.restore();
-      },
     );
   }
 }
