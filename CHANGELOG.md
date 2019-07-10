@@ -1,3 +1,7 @@
+## [0.3.1]
+
+* fix api error base on v1.7.8
+
 ## [0.3.0]
 
 * fix issue that AlwaysScrollableClampingScrollPhysics is not working in new flutter version 

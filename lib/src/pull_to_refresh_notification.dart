@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -373,7 +372,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
             FlutterError.reportError(FlutterErrorDetails(
               exception: FlutterError('The onRefresh callback returned null.\n'
                   'The RefreshIndicator onRefresh callback must return a Future.'),
-              context: 'when calling onRefresh',
+              context: ErrorDescription('when calling onRefresh'),
               library: 'material library',
             ));
           return true;
@@ -426,6 +425,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
 
   @override
   Widget build(BuildContext context) {
+    assert(debugCheckHasMaterialLocalizations(context));
     final Widget child = NotificationListener<ScrollNotification>(
       key: _key,
       onNotification: _handleScrollNotification,
@@ -434,55 +434,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
         child: widget.child,
       ),
     );
-//    if (_Mode == null) {
-//      assert(_DragOffset == null);
-//      assert(_isIndicatorAtTop == null);
-//      return child;
-//    }
-//    assert(_DragOffset != null);
-//    assert(_isIndicatorAtTop != null);
-//
-//    final bool showIndeterminateIndicator =
-//        _Mode == RefreshIndicatorMode.refresh ||
-//            _Mode == RefreshIndicatorMode.done;
     return child;
-    //print(_value.value);
-//    return Stack(
-//      children: <Widget>[
-//        child,
-//        Positioned(
-//          top: _isIndicatorAtTop ? 0.0 : null,
-//          bottom: !_isIndicatorAtTop ? 0.0 : null,
-//          left: 0.0,
-//          right: 0.0,
-//          child: SizeTransition(
-//            axisAlignment: _isIndicatorAtTop ? 1.0 : -1.0,
-//            sizeFactor: _positionFactor, // this is what brings it down
-//            child: Container(
-//              padding: _isIndicatorAtTop
-//                  ? EdgeInsets.only(top: widget.displacement)
-//                  : EdgeInsets.only(bottom: widget.displacement),
-//              alignment: _isIndicatorAtTop
-//                  ? Alignment.topCenter
-//                  : Alignment.bottomCenter,
-//              child: ScaleTransition(
-//                scale: _scaleFactor,
-//                child: AnimatedBuilder(
-//                  animation: _positionController,
-//                  builder: (BuildContext context, Widget child) {
-//                    return RefreshProgressIndicator(
-//                      value: showIndeterminateIndicator ? null : _value.value,
-//                      valueColor: _valueColor,
-//                      backgroundColor: widget.backgroundColor,
-//                    );
-//                  },
-//                ),
-//              ),
-//            ),
-//          ),
-//        ),
-//      ],
-//    );
   }
 
   void _onInnerNoticed() {
@@ -514,7 +466,9 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       child: AnimatedBuilder(
         animation: _positionController,
         builder: (BuildContext context, Widget child) {
-          if (Platform.isIOS) {
+          var isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+
+          if (isIOS) {
             return CupertinoActivityIndicator(
               animating: showIndeterminateIndicator,
               radius: 10.0,
