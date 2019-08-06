@@ -57,6 +57,7 @@ class PullToRefreshNotification extends StatefulWidget {
     this.maxDragOffset,
     this.notificationPredicate = defaultNotificationPredicate,
     this.armedDragUpCancel = true,
+    this.pullBackCurve = Curves.linear,
   })  : assert(child != null),
         assert(onRefresh != null),
         assert(notificationPredicate != null),
@@ -88,6 +89,9 @@ class PullToRefreshNotification extends StatefulWidget {
 
   //the max drag offset
   final double maxDragOffset;
+
+  //The curve to use for the pullback animation
+  final Curve pullBackCurve;
 
   //use in case much ScrollNotification from child
   final bool Function(ScrollNotification notification) notificationPredicate;
@@ -505,7 +509,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     _pullBackFactor = _pullBackController.drive(_pullBackTween);
     _pullBackFactor.addListener(pullBackListener);
     _pullBackController.animateTo(1.0,
-        duration: Duration(milliseconds: 400), curve: Curves.linear);
+        duration: Duration(milliseconds: 400), curve: widget.pullBackCurve);
     //_DragOffset=0.0;
   }
 }
