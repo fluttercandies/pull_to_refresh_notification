@@ -1,3 +1,7 @@
+## [0.3.2]
+
+* allow custom curve to be passed to the widget for the pullback animation
+
 ## [0.3.1]
 
 * fix api error base on v1.7.8
