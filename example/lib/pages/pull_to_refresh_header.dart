@@ -1,9 +1,15 @@
 import 'dart:async';
 
-import 'package:example/push_to_refresh_header_widget.dart';
+import 'package:example/pages/push_to_refresh_header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
+import 'package:ff_annotation_route/ff_annotation_route.dart';
 
+@FFRoute(
+    name: "fluttercandies://PullToRefreshHeader",
+    routeName: "PullToRefreshHeader",
+    description:
+        "Show how to use pull to refresh notification to build a pull refresh header,and hide it on refresh done")
 class PullToRefreshHeader extends StatefulWidget {
   @override
   _PullToRefreshHeaderState createState() => _PullToRefreshHeaderState();

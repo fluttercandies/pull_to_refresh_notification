@@ -2,7 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
+import 'package:ff_annotation_route/ff_annotation_route.dart';
 
+@FFRoute(
+    name: "fluttercandies://PullToRefreshImage",
+    routeName: "PullToRefreshImage",
+    description:
+        "Show how to use pull to refresh notification to build a pull refresh image")
 class PullToRefreshImage extends StatefulWidget {
   @override
   _PullToRefreshImageState createState() => _PullToRefreshImageState();
@@ -14,8 +20,6 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
   int listlength = 50;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     return Material(
       child: Stack(
         children: <Widget>[
