@@ -1,6 +1,6 @@
 # pull_to_refresh_notification
 
-[![pub package](https://img.shields.io/pub/v/pull_to_refresh_notification.svg)](https://pub.dartlang.org/packages/pull_to_refresh_notification)
+[![pub package](https://img.shields.io/pub/v/pull_to_refresh_notification.svg)](https://pub.dartlang.org/packages/pull_to_refresh_notification) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/pull_to_refresh_notification)](https://github.com/fluttercandies/pull_to_refresh_notification/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/pull_to_refresh_notification)](https://github.com/fluttercandies/pull_to_refresh_notification/network)  [![GitHub license](https://img.shields.io/github/license/fluttercandies/pull_to_refresh_notification)](https://github.com/fluttercandies/pull_to_refresh_notification/blob/master/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/pull_to_refresh_notification)](https://github.com/fluttercandies/pull_to_refresh_notification/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
 
 widget to build  pull to refresh effects.
 

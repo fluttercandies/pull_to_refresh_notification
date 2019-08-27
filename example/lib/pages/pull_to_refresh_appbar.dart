@@ -1,7 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
+import 'package:ff_annotation_route/ff_annotation_route.dart';
 
+@FFRoute(
+    name: "fluttercandies://PullToRefreshAppbar",
+    routeName: "PullToRefreshAppbar",
+    description:
+        "Show how to use pull to refresh notification to build a pull refresh appbar")
 class PullToRefreshAppbar extends StatefulWidget {
   @override
   _PullToRefreshAppbarState createState() => _PullToRefreshAppbarState();
