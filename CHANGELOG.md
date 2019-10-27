@@ -1,3 +1,8 @@
+## [0.3.3]
+
+* add candies pull to refresh demo
+* add readme-zh
+
 ## [0.3.2]
 
 * allow custom curve to be passed to the widget for the pullback animation

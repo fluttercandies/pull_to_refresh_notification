@@ -84,7 +84,6 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
 //    print("------------");
     var offset = info?.dragOffset ?? 0.0;
     var mode = info?.mode;
-
     Widget child;
     if (mode == RefreshIndicatorMode.error) {
       child = GestureDetector(
@@ -137,20 +136,14 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
     );
   }
 
-  bool success = false;
+  bool success = true;
   Future<bool> onRefresh() {
-    final Completer<bool> completer = new Completer<bool>();
-    new Timer(const Duration(seconds: 2), () {
-      completer.complete(success);
-      success = true;
-    });
-    return completer.future.then((bool success) {
-      if (success) {
-        setState(() {
-          dateTimeNow = DateTime.now();
-          listlength += 10;
-        });
-      }
+    return Future.delayed(Duration(seconds: 2), () {
+      setState(() {
+        dateTimeNow = DateTime.now();
+        listlength += 10;
+      });
+      success = !success;
       return success;
     });
   }
