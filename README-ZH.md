@@ -2,11 +2,11 @@
 
 [![pub package](https://img.shields.io/pub/v/pull_to_refresh_notification.svg)](https://pub.dartlang.org/packages/pull_to_refresh_notification) [![GitHub stars](https://img.shields.io/github/stars/fluttercandies/pull_to_refresh_notification)](https://github.com/fluttercandies/pull_to_refresh_notification/stargazers) [![GitHub forks](https://img.shields.io/github/forks/fluttercandies/pull_to_refresh_notification)](https://github.com/fluttercandies/pull_to_refresh_notification/network)  [![GitHub license](https://img.shields.io/github/license/fluttercandies/pull_to_refresh_notification)](https://github.com/fluttercandies/pull_to_refresh_notification/blob/master/LICENSE)  [![GitHub issues](https://img.shields.io/github/issues/fluttercandies/pull_to_refresh_notification)](https://github.com/fluttercandies/pull_to_refresh_notification/issues) <a target="_blank" href="https://jq.qq.com/?_wv=1027&k=5bcc0gy"><img border="0" src="https://pub.idqqimg.com/wpa/images/group.png" alt="flutter-candies" title="flutter-candies"></a>
 
-Language: [English](README.md) | [中文简体](README-ZH.md)
+文档语言: [English](README.md) | [中文简体](README-ZH.md)
 
-widget to build  pull to refresh effects.
+自定义下拉刷新动画.
 
-[Chinese blog](https://juejin.im/post/5bebcc44f265da61682aedb8)
+[掘金](https://juejin.im/post/5bebcc44f265da61682aedb8)
 
 - [pull_to_refresh_notification](#pulltorefreshnotification)
 - [RefreshIndicatorMode](#refreshindicatormode)
@@ -31,7 +31,7 @@ enum RefreshIndicatorMode {
 ```
 
 # Sample 1 appbar
-build appbar to pull to refresh with PullToRefreshContainer
+创建一个Appbar的下拉刷新动画
 
 ![](https://github.com/fluttercandies/Flutter_Candies/tree/master/gif/pull_to_refresh/appbar.gif)
 ```dart
@@ -99,8 +99,7 @@ build appbar to pull to refresh with PullToRefreshContainer
 [see demo](https://github.com/fluttercandies/pull_to_refresh_notification/blob/master/example/lib/pages/pull_to_refresh_appbar.dart)
 
 # Sample 2 header
-build header to pull to refresh with PullToRefreshContainer.
-and you can easy to handle the status in pulling.
+创建下拉刷新头，你可以轻松处理状态
 
 ![](https://github.com/fluttercandies/Flutter_Candies/tree/master/gif/pull_to_refresh/header.gif)
 ```dart
@@ -225,7 +224,8 @@ and you can easy to handle the status in pulling.
 [see demo](https://github.com/fluttercandies/pull_to_refresh_notification/blob/master/example/lib/pages/pull_to_refresh_header.dart)
 
 # Sample 3 image
-build zoom image to pull to refresh with using PullToRefreshContainer.
+
+创建一个图片缩放的下拉刷新动画
 
 ![](https://github.com/fluttercandies/Flutter_Candies/tree/master/gif/pull_to_refresh/image.gif)
 ```dart
@@ -315,7 +315,8 @@ build zoom image to pull to refresh with using PullToRefreshContainer.
 [see demo](https://github.com/fluttercandies/pull_to_refresh_notification/blob/master/example/lib/pages/pull_to_refresh_image.dart)
 
 # Sample 4 candies
-build candies animation to pull to refresh with using PullToRefreshContainer.
+
+创建一个棒棒糖下拉刷新动画
 
 ![](https://github.com/fluttercandies/Flutter_Candies/tree/master/gif/pull_to_refresh/candies.gif)
 ```dart
@@ -393,8 +394,10 @@ build candies animation to pull to refresh with using PullToRefreshContainer.
 
 # refresh with code
 
-* define key
-```dart
+使用代码来执行刷新动画
+
+* 定义key
+``` dart
   final GlobalKey<PullToRefreshNotificationState> key =
       new GlobalKey<PullToRefreshNotificationState>();
 
@@ -402,10 +405,10 @@ build candies animation to pull to refresh with using PullToRefreshContainer.
           key: key,    
 ```
 
-* use key
+* 使用
 
-if you define pull Container hegith with dragOffset, you need set notificationDragOffset when refresh.
+如果你的刷新头是根据DragOffset来设置高度，那么你用代码执行刷新的时候。你记得要设置notificationDragOffset
 
-```dart
+ ``` dart 
   key.currentState.show(notificationDragOffset: maxDragOffset);
  ```

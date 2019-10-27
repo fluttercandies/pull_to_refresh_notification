@@ -6,6 +6,7 @@
 import 'package:flutter/widgets.dart';
 import 'pages/main_page.dart';
 import 'pages/pull_to_refresh_appbar.dart';
+import 'pages/pull_to_refresh_candies.dart';
 import 'pages/pull_to_refresh_header.dart';
 import 'pages/pull_to_refresh_image.dart';
 
@@ -22,6 +23,13 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         routeName: "PullToRefreshAppbar",
         description:
             "Show how to use pull to refresh notification to build a pull refresh appbar",
+      );
+    case "fluttercandies://PullToRefreshCandies":
+      return RouteResult(
+        widget: PullToRefreshCandies(),
+        routeName: "PullToRefreshCandies",
+        description:
+            "Show how to use pull to refresh notification to build a pull candies animation",
       );
     case "fluttercandies://PullToRefreshHeader":
       return RouteResult(
@@ -71,6 +79,7 @@ enum PageRouteType { material, cupertino, transparent }
 List<String> routeNames = [
   "fluttercandies://mainpage",
   "fluttercandies://PullToRefreshAppbar",
+  "fluttercandies://PullToRefreshCandies",
   "fluttercandies://PullToRefreshHeader",
   "fluttercandies://PullToRefreshImage"
 ];
