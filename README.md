@@ -6,6 +6,8 @@ Language: [English](README.md) | [中文简体](README-ZH.md)
 
 widget to build  pull to refresh effects.
 
+[Web demo for PullToRefreshNotification](https://fluttercandies.github.io/pull_to_refresh_notification/)
+
 [Chinese blog](https://juejin.im/post/5bebcc44f265da61682aedb8)
 
 - [pull_to_refresh_notification](#pulltorefreshnotification)

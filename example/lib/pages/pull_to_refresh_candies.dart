@@ -1,11 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_candies_demo_library/flutter_candies_demo_library.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 import 'dart:math' as math;
-
-import 'push_to_refresh_header_widget.dart';
 
 @FFRoute(
     name: "fluttercandies://PullToRefreshCandies",
