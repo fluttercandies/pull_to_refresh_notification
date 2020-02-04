@@ -6,6 +6,8 @@
 
 自定义下拉刷新动画.
 
+[Web demo for PullToRefreshNotification](https://fluttercandies.github.io/pull_to_refresh_notification/)
+
 [掘金](https://juejin.im/post/5bebcc44f265da61682aedb8)
 
 - [pull_to_refresh_notification](#pulltorefreshnotification)

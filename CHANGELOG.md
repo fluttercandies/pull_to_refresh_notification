@@ -1,3 +1,7 @@
+## [0.3.4]
+
+* web support
+
 ## [0.3.3]
 
 * add candies pull to refresh demo

@@ -539,8 +539,8 @@ class PullToRefreshContainer extends StatefulWidget {
 class _PullToRefreshContainerState extends State<PullToRefreshContainer> {
   @override
   Widget build(BuildContext context) {
-    PullToRefreshNotificationState ss = context
-        .ancestorStateOfType(TypeMatcher<PullToRefreshNotificationState>());
+    PullToRefreshNotificationState ss =
+        context.findAncestorStateOfType<PullToRefreshNotificationState>();
     return StreamBuilder<PullToRefreshScrollNotificationInfo>(
       builder: (c, s) {
         return widget.builder(s.data);

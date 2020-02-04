@@ -7,13 +7,11 @@ class AlwaysScrollableClampingScrollPhysics extends ClampingScrollPhysics {
 
   @override
   AlwaysScrollableClampingScrollPhysics applyTo(ScrollPhysics ancestor) {
-    // TODO: implement applyTo
     return AlwaysScrollableClampingScrollPhysics(parent: buildParent(ancestor));
   }
 
   @override
   bool shouldAcceptUserOffset(ScrollMetrics position) {
-    // TODO: implement shouldAcceptUserOffset
     return true;
   }
 }
