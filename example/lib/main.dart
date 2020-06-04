@@ -2,7 +2,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_candies_demo_library/flutter_candies_demo_library.dart';
 import 'example_route.dart';
 import 'example_route_helper.dart';
 import 'example_routes.dart';
@@ -20,14 +20,18 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       builder: (BuildContext c, Widget w) {
-        ScreenUtil.instance =
-            ScreenUtil(width: 750, height: 1334, allowFontScaling: true)
-              ..init(c);
-        final MediaQueryData data = MediaQuery.of(c);
-        return MediaQuery(
-          data: data.copyWith(textScaleFactor: 1.0),
-          child: w,
-        );
+        ScreenUtil.init(width: 750, height: 1334, allowFontScaling: true);
+        // ScreenUtil.instance =
+        //     ScreenUtil(width: 750, height: 1334, allowFontScaling: true)
+        //       ..init(c);
+        if (!kIsWeb) {
+          final MediaQueryData data = MediaQuery.of(c);
+          return MediaQuery(
+            data: data.copyWith(textScaleFactor: 1.0),
+            child: w,
+          );
+        }
+        return w;
       },
       initialRoute: Routes.fluttercandiesMainpage,
       onGenerateRoute: (RouteSettings settings) {

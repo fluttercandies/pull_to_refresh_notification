@@ -74,10 +74,7 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
     print(info?.mode);
     print(info?.dragOffset);
 //    print('------------');
-    final Padding action = Padding(
-      child: info?.refreshWiget ?? Icon(Icons.more_horiz),
-      padding: const EdgeInsets.all(15.0),
-    );
+
     final double offset = info?.dragOffset ?? 0.0;
 //    var mode = info?.mode;
 //    if (mode != null && mode == RefreshIndicatorMode.done) {
@@ -88,7 +85,11 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
         title: const Text('PullToRefreshAppbar'),
         centerTitle: true,
         expandedHeight: 200.0 + offset,
-        actions: <Widget>[action],
+        actions: <Widget>[
+          UnconstrainedBox(
+            child: info?.refreshWiget ?? Icon(Icons.more_horiz),
+          )
+        ],
         flexibleSpace: FlexibleSpaceBar(
             //centerTitle: true,
             title: Text(

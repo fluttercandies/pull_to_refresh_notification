@@ -79,15 +79,7 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
     final double offset = info?.dragOffset ?? 0.0;
     Widget refreshWiget = Container();
     if (info?.refreshWiget != null) {
-      refreshWiget = Material(
-        type: MaterialType.circle,
-        color: Theme.of(context).canvasColor,
-        elevation: 2.0,
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: info.refreshWiget,
-        ),
-      );
+      refreshWiget=info.refreshWiget;
     }
 
     return SliverToBoxAdapter(

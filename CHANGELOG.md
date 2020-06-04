@@ -1,3 +1,16 @@
+## [0.3.5]
+
+* fix analysis_options
+  
+## [0.3.4]
+
+* web support
+
+## [0.3.3]
+
+* add candies pull to refresh demo
+* add readme-zh
+
 ## [0.3.2]
 
 * allow custom curve to be passed to the widget for the pullback animation

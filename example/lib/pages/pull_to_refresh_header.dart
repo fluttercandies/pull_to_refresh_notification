@@ -1,7 +1,8 @@
 import 'dart:async';
 
-import 'package:example/pages/push_to_refresh_header_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_candies_demo_library/flutter_candies_demo_library.dart'
+    as demo;
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 
@@ -29,7 +30,7 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
         PullToRefreshNotification(
           color: Colors.blue,
           onRefresh: onRefresh,
-          maxDragOffset: maxDragOffset,
+          maxDragOffset: demo.maxDragOffset,
           armedDragUpCancel: false,
           key: key,
           child: CustomScrollView(
@@ -70,7 +71,7 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
           child: FloatingActionButton(
             child: Icon(Icons.refresh),
             onPressed: () {
-              key.currentState.show(notificationDragOffset: maxDragOffset);
+              key.currentState.show(notificationDragOffset: demo.maxDragOffset);
             },
           ),
         )
@@ -108,28 +109,7 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
             ),
           ));
     } else {
-      child = PullToRefreshHeaderWidget(info, dateTimeNow);
-//      child = Container(
-//        color: Colors.grey,
-//        alignment: Alignment.bottomCenter,
-//        height: offset,
-//        width: double.infinity,
-//        //padding: EdgeInsets.only(top: offset),
-//        child: Row(
-//          mainAxisAlignment: MainAxisAlignment.center,
-//          children: <Widget>[
-//            refreshWiget,
-//            Container(
-//              padding: EdgeInsets.only(left: 5.0),
-//              alignment: Alignment.center,
-//              child: Text(
-//                mode?.toString() ?? '',
-//                style: TextStyle(fontSize: 12.0, inherit: false),
-//              ),
-//            )
-//          ],
-//        ),
-//      );
+      child = demo.PullToRefreshHeader(info, dateTimeNow);
     }
 
     return SliverToBoxAdapter(

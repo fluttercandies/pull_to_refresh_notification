@@ -4,6 +4,7 @@
 // **************************************************************************
 const List<String> routeNames = <String>[
   'fluttercandies://PullToRefreshAppbar',
+  'fluttercandies://PullToRefreshCandies',
   'fluttercandies://PullToRefreshHeader',
   'fluttercandies://PullToRefreshImage',
   'fluttercandies://mainpage',
@@ -21,6 +22,16 @@ class Routes {
   /// [description] : 'Show how to use pull to refresh notification to build a pull refresh appbar'
   static const String fluttercandiesPullToRefreshAppbar =
       'fluttercandies://PullToRefreshAppbar';
+
+  /// 'Show how to use pull to refresh notification to build a pull candies animation'
+  ///
+  /// [name] : 'fluttercandies://PullToRefreshCandies'
+  ///
+  /// [routeName] : 'PullToRefreshCandies'
+  ///
+  /// [description] : 'Show how to use pull to refresh notification to build a pull candies animation'
+  static const String fluttercandiesPullToRefreshCandies =
+      'fluttercandies://PullToRefreshCandies';
 
   /// 'Show how to use pull to refresh notification to build a pull refresh header,and hide it on refresh done'
   ///

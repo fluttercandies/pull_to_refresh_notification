@@ -1,6 +1,7 @@
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
+import 'package:flutter_candies_demo_library/flutter_candies_demo_library.dart';
 import 'package:oktoast/oktoast.dart';
 
 import '../example_route.dart';
@@ -24,7 +25,37 @@ MainPage() {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: const Text('pull to refresh'),
+        title: const Text('PullToRefresh'),
+        actions: <Widget>[
+          ButtonTheme(
+            minWidth: 0.0,
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: FlatButton(
+              child: Text(
+                'Github',
+                style: TextStyle(
+                  decorationStyle: TextDecorationStyle.solid,
+                  decoration: TextDecoration.underline,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                launch('https://github.com/fluttercandies/pull_to_refresh_notification');
+              },
+            ),
+          ),
+          ButtonTheme(
+            padding: const EdgeInsets.only(right: 10.0),
+            minWidth: 0.0,
+            child: FlatButton(
+              child:
+                  Image.network('https://pub.idqqimg.com/wpa/images/group.png'),
+              onPressed: () {
+                launch('https://jq.qq.com/?_wv=1027&k=5bcc0gy');
+              },
+            ),
+          )
+        ],
       ),
       body: ListView.builder(
         itemBuilder: (BuildContext c, int index) {
