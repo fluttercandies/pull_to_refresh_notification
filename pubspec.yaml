@@ -4,8 +4,10 @@ version: 0.3.2
 author: zmtzawqlp <zmtzawqlp@live.com>
 homepage: https://github.com/fluttercandies/pull_to_refresh_notification
 
+
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.6.0 <3.0.0"
+  flutter: ">=1.12.13"
 
 dependencies:
   flutter:

@@ -5,10 +5,10 @@ import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 import 'package:ff_annotation_route/ff_annotation_route.dart';
 
 @FFRoute(
-    name: "fluttercandies://PullToRefreshImage",
-    routeName: "PullToRefreshImage",
+    name: 'fluttercandies://PullToRefreshImage',
+    routeName: 'PullToRefreshImage',
     description:
-        "Show how to use pull to refresh notification to build a pull refresh image")
+        'Show how to use pull to refresh notification to build a pull refresh image')
 class PullToRefreshImage extends StatefulWidget {
   @override
   _PullToRefreshImageState createState() => _PullToRefreshImageState();
@@ -16,7 +16,7 @@ class PullToRefreshImage extends StatefulWidget {
 
 class _PullToRefreshImageState extends State<PullToRefreshImage> {
   final GlobalKey<PullToRefreshNotificationState> key =
-      new GlobalKey<PullToRefreshNotificationState>();
+      GlobalKey<PullToRefreshNotificationState>();
   int listlength = 50;
   @override
   Widget build(BuildContext context) {
@@ -30,22 +30,22 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
             key: key,
             child: CustomScrollView(
               ///in case list is not full screen and remove ios Bouncing
-              physics: AlwaysScrollableClampingScrollPhysics(),
+              physics: const AlwaysScrollableClampingScrollPhysics(),
               slivers: <Widget>[
-                SliverAppBar(
-                  title: Text("PullToRefreshImage"),
+                const SliverAppBar(
+                  title: Text('PullToRefreshImage'),
                 ),
                 PullToRefreshContainer(buildPulltoRefreshImage),
                 SliverList(
                     delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
                   return Container(
-                      padding: EdgeInsets.only(bottom: 4.0),
+                      padding: const EdgeInsets.only(bottom: 4.0),
                       child: Column(
                         children: <Widget>[
                           Text(
-                            "List item : ${listlength - index}",
-                            style: TextStyle(fontSize: 15.0),
+                            'List item : ${listlength - index}',
+                            style: const TextStyle(fontSize: 15.0),
                           ),
                           Divider(
                             color: Colors.grey,
@@ -75,8 +75,8 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
   Widget buildPulltoRefreshImage(PullToRefreshScrollNotificationInfo info) {
     print(info?.mode);
     print(info?.dragOffset);
-//    print("------------");
-    var offset = info?.dragOffset ?? 0.0;
+//    print('------------');
+    final double offset = info?.dragOffset ?? 0.0;
     Widget refreshWiget = Container();
     if (info?.refreshWiget != null) {
       refreshWiget = Material(
@@ -84,7 +84,7 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
         color: Theme.of(context).canvasColor,
         elevation: 2.0,
         child: Padding(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           child: info.refreshWiget,
         ),
       );
@@ -98,7 +98,7 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
               height: 200.0 + offset,
               width: double.infinity,
               child: Image.asset(
-                "assets/467141054.jpg",
+                'assets/467141054.jpg',
                 //fit: offset > 0.0 ? BoxFit.cover : BoxFit.fill,
                 fit: BoxFit.cover,
               )),
@@ -108,11 +108,11 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
               children: <Widget>[
                 refreshWiget,
                 Container(
-                  padding: EdgeInsets.only(left: 5.0),
+                  padding: const EdgeInsets.only(left: 5.0),
                   alignment: Alignment.center,
                   child: Text(
-                    info?.mode?.toString() ?? "",
-                    style: TextStyle(fontSize: 12.0, inherit: false),
+                    info?.mode?.toString() ?? '',
+                    style: const TextStyle(fontSize: 12.0, inherit: false),
                   ),
                 )
               ],
@@ -124,17 +124,11 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
   }
 
   Future<bool> onRefresh() {
-    final Completer<bool> completer = new Completer<bool>();
-    new Timer(const Duration(seconds: 2), () {
-      completer.complete(true);
-    });
-    return completer.future.then((bool success) {
-      if (success) {
-        setState(() {
-          listlength += 10;
-        });
-      }
-      return success;
+    return Future<bool>.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        listlength += 10;
+      });
+      return true;
     });
   }
 }

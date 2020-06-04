@@ -1,47 +1,47 @@
 import 'dart:math';
-
+import 'dart:ui' as ui show Image;
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'dart:ui' as ui show Image;
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 
-double get maxDragOffset => ScreenUtil.getInstance().setWidth(180);
+double get maxDragOffset => ScreenUtil.getInstance().setWidth(180) as double;
 double hideHeight = maxDragOffset / 2.3;
 double refreshHeight = maxDragOffset / 1.5;
 
 class PullToRefreshHeaderWidget extends StatelessWidget {
+   const PullToRefreshHeaderWidget(this.info, this.lastRefreshTime, {this.color});
   final PullToRefreshScrollNotificationInfo info;
   final DateTime lastRefreshTime;
   final Color color;
-  PullToRefreshHeaderWidget(this.info, this.lastRefreshTime, {this.color});
-
   @override
   Widget build(BuildContext context) {
-    if (info == null) return Container();
-    String text = "";
+    if (info == null) {
+      return Container();
+    }
+    String text = '';
     if (info.mode == RefreshIndicatorMode.armed) {
-      text = "Release to refresh";
+      text = 'Release to refresh';
     } else if (info.mode == RefreshIndicatorMode.refresh ||
         info.mode == RefreshIndicatorMode.snap) {
-      text = "Loading...";
+      text = 'Loading...';
     } else if (info.mode == RefreshIndicatorMode.done) {
-      text = "Refresh completed.";
+      text = 'Refresh completed.';
     } else if (info.mode == RefreshIndicatorMode.drag) {
-      text = "Pull to refresh";
+      text = 'Pull to refresh';
     } else if (info.mode == RefreshIndicatorMode.canceled) {
-      text = "Cancel refresh";
+      text = 'Cancel refresh';
     }
 
     final TextStyle ts = TextStyle(
       color: Colors.grey,
-    ).copyWith(fontSize: ScreenUtil.getInstance().setSp(26));
+    ).copyWith(fontSize: ScreenUtil.getInstance().setSp(26) as double);
 
-    double dragOffset = info?.dragOffset ?? 0.0;
+    final double dragOffset = info?.dragOffset ?? 0.0;
 
-    DateTime time = lastRefreshTime ?? DateTime.now();
-    final top = -hideHeight + dragOffset;
+    final DateTime time = lastRefreshTime ?? DateTime.now();
+    final double top = -hideHeight + dragOffset;
     return Container(
       height: dragOffset,
       color: color ?? Colors.transparent,
@@ -61,7 +61,7 @@ class PullToRefreshHeaderWidget extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.centerRight,
                     child: RefreshImage(top),
-                    margin: EdgeInsets.only(right: 12.0),
+                    margin: const EdgeInsets.only(right: 12.0),
                   ),
                 ),
                 Column(
@@ -71,10 +71,11 @@ class PullToRefreshHeaderWidget extends StatelessWidget {
                       style: ts,
                     ),
                     Text(
-                      "Last updated:" +
-                          DateFormat("yyyy-MM-dd hh:mm").format(time),
+                      'Last updated:' +
+                          DateFormat('yyyy-MM-dd hh:mm').format(time),
                       style: ts.copyWith(
-                          fontSize: ScreenUtil.getInstance().setSp(24)),
+                          fontSize:
+                              ScreenUtil.getInstance().setSp(24) as double),
                     )
                   ],
                 ),
@@ -91,13 +92,14 @@ class PullToRefreshHeaderWidget extends StatelessWidget {
 }
 
 class RefreshImage extends StatelessWidget {
-  final double top;
-  RefreshImage(this.top);
+
+  const RefreshImage(this.top);
+    final double top;
   @override
   Widget build(BuildContext context) {
-    final double imageSize = ScreenUtil.getInstance().setWidth(80);
+    final double imageSize = ScreenUtil.getInstance().setWidth(80) as double;
     return ExtendedImage.asset(
-      "assets/flutterCandies_grey.png",
+      'assets/flutterCandies_grey.png',
       width: imageSize,
       height: imageSize,
       afterPaintImage: (Canvas canvas, Rect rect, ui.Image image, Paint paint) {
@@ -105,7 +107,8 @@ class RefreshImage extends StatelessWidget {
         final double imageWidth = image.width.toDouble();
         final Size size = rect.size;
         final double y =
-            (1 - min(top / (refreshHeight - hideHeight), 1)) * imageHeight;
+            (1 - min<double>(top / (refreshHeight - hideHeight), 1)) *
+                imageHeight;
 
         canvas.drawImageRect(
             image,
@@ -114,7 +117,7 @@ class RefreshImage extends StatelessWidget {
                 size.width, (imageHeight - y) / imageHeight * size.height),
             Paint()
               ..colorFilter =
-                  ColorFilter.mode(Color(0xFFea5504), BlendMode.srcIn)
+                  const ColorFilter.mode(Color(0xFFea5504), BlendMode.srcIn)
               ..isAntiAlias = false
               ..filterQuality = FilterQuality.low);
 
