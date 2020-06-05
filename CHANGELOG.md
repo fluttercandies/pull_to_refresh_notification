@@ -1,3 +1,7 @@
+## [0.3.5]
+
+* fix analysis_options
+  
 ## [0.3.4]
 
 * web support

@@ -53,7 +53,7 @@ class PullToRefreshNotification extends StatefulWidget {
     @required this.child,
     @required this.onRefresh,
     this.color,
-    this.pullBackOnRefresh: false,
+    this.pullBackOnRefresh = false,
     this.maxDragOffset,
     this.notificationPredicate = defaultNotificationPredicate,
     this.armedDragUpCancel = true,
@@ -105,8 +105,8 @@ class PullToRefreshNotification extends StatefulWidget {
 /// programmatically show the refresh indicator, see the [show] method.
 class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     with TickerProviderStateMixin<PullToRefreshNotification> {
-  final _onNoticed =
-      new StreamController<PullToRefreshScrollNotificationInfo>.broadcast();
+  final StreamController<PullToRefreshScrollNotificationInfo> _onNoticed =
+      StreamController<PullToRefreshScrollNotificationInfo>.broadcast();
   Stream<PullToRefreshScrollNotificationInfo> get onNoticed =>
       _onNoticed.stream;
 
@@ -121,7 +121,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
 
   RefreshIndicatorMode _mode;
   RefreshIndicatorMode get _refreshIndicatorMode => _mode;
-  set _refreshIndicatorMode(value) {
+  set _refreshIndicatorMode(RefreshIndicatorMode value) {
     if (_mode != value) {
       _mode = value;
       _onInnerNoticed();
@@ -186,16 +186,18 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
 
   double maxContainerExtent = 0.0;
   bool _handleScrollNotification(ScrollNotification notification) {
-    var reuslt = _innerhandleScrollNotification(notification);
+    final bool reuslt = _innerhandleScrollNotification(notification);
     //_onInnerNoticed();
     return reuslt;
   }
 
   bool _innerhandleScrollNotification(ScrollNotification notification) {
-    if (!widget.notificationPredicate(notification)) return false;
+    if (!widget.notificationPredicate(notification)) {
+      return false;
+    }
     if (notification.depth != 0) {
-      maxContainerExtent = math.max(
-          notification.metrics.viewportDimension, this.maxContainerExtent);
+      maxContainerExtent =
+          math.max(notification.metrics.viewportDimension, maxContainerExtent);
     }
     if (notification is ScrollStartNotification &&
         notification.metrics.extentBefore == 0.0 &&
@@ -269,7 +271,9 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   }
 
   bool _handleGlowNotification(OverscrollIndicatorNotification notification) {
-    if (notification.depth != 0 || !notification.leading) return false;
+    if (notification.depth != 0 || !notification.leading) {
+      return false;
+    }
     if (_refreshIndicatorMode == RefreshIndicatorMode.drag) {
       notification.disallowGlow();
       return true;
@@ -313,7 +317,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     if (_refreshIndicatorMode == RefreshIndicatorMode.armed)
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
     _positionController.value =
-        newValue.clamp(0.0, 1.0); // this triggers various rebuilds
+        newValue.clamp(0.0, 1.0) as double; // this triggers various rebuilds
 
     if (_refreshIndicatorMode == RefreshIndicatorMode.drag &&
         _valueColor.value.alpha == 0xFF)
@@ -381,7 +385,9 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
             ));
           return true;
         }());
-        if (refreshResult == null) return;
+        if (refreshResult == null) {
+          return;
+        }
         refreshResult.then((bool success) {
           if (mounted &&
               _refreshIndicatorMode == RefreshIndicatorMode.refresh) {
@@ -425,13 +431,10 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     return _pendingRefreshFuture;
   }
 
-  final GlobalKey _key = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     assert(debugCheckHasMaterialLocalizations(context));
     final Widget child = NotificationListener<ScrollNotification>(
-      key: _key,
       onNotification: _handleScrollNotification,
       child: NotificationListener<OverscrollIndicatorNotification>(
         onNotification: _handleGlowNotification,
@@ -461,7 +464,9 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   }
 
   Widget _getRefreshWidget() {
-    if (_refreshIndicatorMode == null) return null;
+    if (_refreshIndicatorMode == null) {
+      return null;
+    }
     final bool showIndeterminateIndicator =
         _refreshIndicatorMode == RefreshIndicatorMode.refresh ||
             _refreshIndicatorMode == RefreshIndicatorMode.done;
@@ -470,7 +475,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       child: AnimatedBuilder(
         animation: _positionController,
         builder: (BuildContext context, Widget child) {
-          var isIOS = Theme.of(context).platform == TargetPlatform.iOS;
+          final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
           if (isIOS) {
             return CupertinoActivityIndicator(
@@ -509,7 +514,8 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     _pullBackFactor = _pullBackController.drive(_pullBackTween);
     _pullBackFactor.addListener(pullBackListener);
     _pullBackController.animateTo(1.0,
-        duration: Duration(milliseconds: 400), curve: widget.pullBackCurve);
+        duration: const Duration(milliseconds: 400),
+        curve: widget.pullBackCurve);
     //_DragOffset=0.0;
   }
 }
@@ -521,17 +527,17 @@ bool defaultNotificationPredicate(ScrollNotification notification) {
 }
 
 class PullToRefreshScrollNotificationInfo {
+  PullToRefreshScrollNotificationInfo(this.mode, this.dragOffset,
+      this.refreshWiget, this.pullToRefreshNotificationState);
   final RefreshIndicatorMode mode;
   final double dragOffset;
   final Widget refreshWiget;
   final PullToRefreshNotificationState pullToRefreshNotificationState;
-  PullToRefreshScrollNotificationInfo(this.mode, this.dragOffset,
-      this.refreshWiget, this.pullToRefreshNotificationState);
 }
 
 class PullToRefreshContainer extends StatefulWidget {
+  const PullToRefreshContainer(this.builder);
   final PullToRefreshContainerBuilder builder;
-  PullToRefreshContainer(this.builder);
   @override
   _PullToRefreshContainerState createState() => _PullToRefreshContainerState();
 }
@@ -539,10 +545,11 @@ class PullToRefreshContainer extends StatefulWidget {
 class _PullToRefreshContainerState extends State<PullToRefreshContainer> {
   @override
   Widget build(BuildContext context) {
-    PullToRefreshNotificationState ss =
+    final PullToRefreshNotificationState ss =
         context.findAncestorStateOfType<PullToRefreshNotificationState>();
     return StreamBuilder<PullToRefreshScrollNotificationInfo>(
-      builder: (c, s) {
+      builder: (BuildContext c,
+          AsyncSnapshot<PullToRefreshScrollNotificationInfo> s) {
         return widget.builder(s.data);
       },
       stream: ss?.onNoticed,
@@ -552,353 +559,3 @@ class _PullToRefreshContainerState extends State<PullToRefreshContainer> {
 
 typedef PullToRefreshContainerBuilder = Widget Function(
     PullToRefreshScrollNotificationInfo info);
-
-class RefreshProgressIndicator extends CircularProgressIndicator {
-  /// Creates a refresh progress indicator.
-  ///
-  /// Rather than creating a refresh progress indicator directly, consider using
-  /// a [RefreshIndicator] together with a [Scrollable] widget.
-  const RefreshProgressIndicator({
-    Key key,
-    double value,
-    Color backgroundColor,
-    Animation<Color> valueColor,
-    double strokeWidth =
-        2.0, // Different default than CircularProgressIndicator.
-  }) : super(
-          key: key,
-          value: value,
-          backgroundColor: backgroundColor,
-          valueColor: valueColor,
-          strokeWidth: strokeWidth,
-        );
-
-  @override
-  _RefreshProgressIndicatorState createState() =>
-      _RefreshProgressIndicatorState();
-}
-
-class _RefreshProgressIndicatorState extends _CircularProgressIndicatorState {
-  static const double _indicatorSize = 18.0;
-
-  // Always show the indeterminate version of the circular progress indicator.
-  // When value is non-null the sweep of the progress indicator arrow's arc
-  // varies from 0 to about 270 degrees. When value is null the arrow animates
-  // starting from wherever we left it.
-  @override
-  Widget build(BuildContext context) {
-    if (widget.value != null)
-      _controller.value = widget.value / 10.0;
-    else if (!_controller.isAnimating) _controller.repeat();
-    return _buildAnimation();
-  }
-
-  @override
-  Widget _buildIndicator(BuildContext context, double headValue,
-      double tailValue, int stepValue, double rotationValue) {
-    final double arrowheadScale =
-        widget.value == null ? 0.0 : (widget.value * 2.0).clamp(0.0, 1.0);
-    return Container(
-      alignment: Alignment.center,
-      child: Container(
-        width: _indicatorSize,
-        height: _indicatorSize,
-        //color: Colors.red,
-        child: CustomPaint(
-          painter: _RefreshProgressIndicatorPainter(
-            valueColor: widget._getValueColor(context),
-            value: null, // Draw the indeterminate progress indicator.
-            headValue: headValue,
-            tailValue: tailValue,
-            stepValue: stepValue,
-            rotationValue: rotationValue,
-            strokeWidth: widget.strokeWidth,
-            arrowheadScale: arrowheadScale,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-const double _kMinCircularProgressIndicatorSize = 36.0;
-
-final Animatable<double> _kStrokeHeadTween = CurveTween(
-  curve: const Interval(0.0, 0.5, curve: Curves.fastOutSlowIn),
-).chain(CurveTween(
-  curve: const SawTooth(5),
-));
-
-final Animatable<double> _kStrokeTailTween = CurveTween(
-  curve: const Interval(0.5, 1.0, curve: Curves.fastOutSlowIn),
-).chain(CurveTween(
-  curve: const SawTooth(5),
-));
-
-final Animatable<int> _kStepTween = StepTween(begin: 0, end: 5);
-
-final Animatable<double> _kRotationTween = CurveTween(curve: const SawTooth(5));
-
-class CircularProgressIndicator extends ProgressIndicator {
-  /// Creates a circular progress indicator.
-  ///
-  /// The [value] argument can be either null (corresponding to an indeterminate
-  /// progress indicator) or non-null (corresponding to a determinate progress
-  /// indicator). See [value] for details.
-  const CircularProgressIndicator({
-    Key key,
-    double value,
-    Color backgroundColor,
-    Animation<Color> valueColor,
-    this.strokeWidth = 4.0,
-  }) : super(
-            key: key,
-            value: value,
-            backgroundColor: backgroundColor,
-            valueColor: valueColor);
-
-  /// The width of the line used to draw the circle.
-  final double strokeWidth;
-
-  @override
-  _CircularProgressIndicatorState createState() =>
-      _CircularProgressIndicatorState();
-}
-
-class _CircularProgressIndicatorState extends State<CircularProgressIndicator>
-    with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(seconds: 5),
-      vsync: this,
-    );
-    if (widget.value == null) _controller.repeat();
-  }
-
-  @override
-  void didUpdateWidget(CircularProgressIndicator oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.value == null && !_controller.isAnimating)
-      _controller.repeat();
-    else if (widget.value != null && _controller.isAnimating)
-      _controller.stop();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  Widget _buildIndicator(BuildContext context, double headValue,
-      double tailValue, int stepValue, double rotationValue) {
-    return Container(
-      constraints: const BoxConstraints(
-        minWidth: _kMinCircularProgressIndicatorSize,
-        minHeight: _kMinCircularProgressIndicatorSize,
-      ),
-      child: CustomPaint(
-        painter: _CircularProgressIndicatorPainter(
-          valueColor: widget._getValueColor(context),
-          value: widget.value, // may be null
-          headValue:
-              headValue, // remaining arguments are ignored if widget.value is not null
-          tailValue: tailValue,
-          stepValue: stepValue,
-          rotationValue: rotationValue,
-          strokeWidth: widget.strokeWidth,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAnimation() {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (BuildContext context, Widget child) {
-        return _buildIndicator(
-          context,
-          _kStrokeHeadTween.evaluate(_controller),
-          _kStrokeTailTween.evaluate(_controller),
-          _kStepTween.evaluate(_controller),
-          _kRotationTween.evaluate(_controller),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (widget.value != null) return _buildIndicator(context, 0.0, 0.0, 0, 0.0);
-    return _buildAnimation();
-  }
-}
-
-class _RefreshProgressIndicatorPainter
-    extends _CircularProgressIndicatorPainter {
-  _RefreshProgressIndicatorPainter({
-    Color valueColor,
-    double value,
-    double headValue,
-    double tailValue,
-    int stepValue,
-    double rotationValue,
-    double strokeWidth,
-    this.arrowheadScale,
-  }) : super(
-          valueColor: valueColor,
-          value: value,
-          headValue: headValue,
-          tailValue: tailValue,
-          stepValue: stepValue,
-          rotationValue: rotationValue,
-          strokeWidth: strokeWidth,
-        );
-
-  final double arrowheadScale;
-
-  void paintArrowhead(Canvas canvas, Size size) {
-    // ux, uy: a unit vector whose direction parallels the base of the arrowhead.
-    // (So ux, -uy points in the direction the arrowhead points.)
-    final double arcEnd = arcStart + arcSweep;
-    final double ux = math.cos(arcEnd);
-    final double uy = math.sin(arcEnd);
-
-    assert(size.width == size.height);
-    final double radius = size.width / 2.0;
-    final double arrowheadPointX =
-        radius + ux * radius + -uy * strokeWidth * 2.0 * arrowheadScale;
-    final double arrowheadPointY =
-        radius + uy * radius + ux * strokeWidth * 2.0 * arrowheadScale;
-    final double arrowheadRadius = strokeWidth * 1.5 * arrowheadScale;
-    final double innerRadius = radius - arrowheadRadius;
-    final double outerRadius = radius + arrowheadRadius;
-
-    final Path path = Path()
-      ..moveTo(radius + ux * innerRadius, radius + uy * innerRadius)
-      ..lineTo(radius + ux * outerRadius, radius + uy * outerRadius)
-      ..lineTo(arrowheadPointX, arrowheadPointY)
-      ..close();
-    final Paint paint = Paint()
-      ..color = valueColor
-      ..strokeWidth = strokeWidth
-      ..style = PaintingStyle.fill;
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    super.paint(canvas, size);
-    if (arrowheadScale > 0.0) paintArrowhead(canvas, size);
-  }
-}
-
-class _CircularProgressIndicatorPainter extends CustomPainter {
-  _CircularProgressIndicatorPainter({
-    this.valueColor,
-    this.value,
-    this.headValue,
-    this.tailValue,
-    this.stepValue,
-    this.rotationValue,
-    this.strokeWidth,
-  })  : arcStart = value != null
-            ? _startAngle
-            : _startAngle +
-                tailValue * 3 / 2 * math.pi +
-                rotationValue * math.pi * 1.7 -
-                stepValue * 0.8 * math.pi,
-        arcSweep = value != null
-            ? value.clamp(0.0, 1.0) * _sweep
-            : math.max(
-                headValue * 3 / 2 * math.pi - tailValue * 3 / 2 * math.pi,
-                _epsilon);
-
-  final Color valueColor;
-  final double value;
-  final double headValue;
-  final double tailValue;
-  final int stepValue;
-  final double rotationValue;
-  final double strokeWidth;
-  final double arcStart;
-  final double arcSweep;
-
-  static const double _twoPi = math.pi * 2.0;
-  static const double _epsilon = .001;
-  // Canvas.drawArc(r, 0, 2*PI) doesn't draw anything, so just get close.
-  static const double _sweep = _twoPi - _epsilon;
-  static const double _startAngle = -math.pi / 2.0;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = valueColor
-      ..strokeWidth = strokeWidth
-      ..style = PaintingStyle.stroke;
-
-    if (value == null) // Indeterminate
-      paint.strokeCap = StrokeCap.square;
-
-    canvas.drawArc(Offset.zero & size, arcStart, arcSweep, false, paint);
-  }
-
-  @override
-  bool shouldRepaint(_CircularProgressIndicatorPainter oldPainter) {
-    return oldPainter.valueColor != valueColor ||
-        oldPainter.value != value ||
-        oldPainter.headValue != headValue ||
-        oldPainter.tailValue != tailValue ||
-        oldPainter.stepValue != stepValue ||
-        oldPainter.rotationValue != rotationValue ||
-        oldPainter.strokeWidth != strokeWidth;
-  }
-}
-
-abstract class ProgressIndicator extends StatefulWidget {
-  /// Creates a progress indicator.
-  ///
-  /// The [value] argument can be either null (corresponding to an indeterminate
-  /// progress indicator) or non-null (corresponding to a determinate progress
-  /// indicator). See [value] for details.
-  const ProgressIndicator({
-    Key key,
-    this.value,
-    this.backgroundColor,
-    this.valueColor,
-  }) : super(key: key);
-
-  /// If non-null, the value of this progress indicator with 0.0 corresponding
-  /// to no progress having been made and 1.0 corresponding to all the progress
-  /// having been made.
-  ///
-  /// If null, this progress indicator is indeterminate, which means the
-  /// indicator displays a predetermined animation that does not indicator how
-  /// much actual progress is being made.
-  final double value;
-
-  /// The progress indicator's background color. The current theme's
-  /// [ThemeData.backgroundColor] by default.
-  final Color backgroundColor;
-
-  /// The indicator's color is the animation's value. To specify a constant
-  /// color use: `new AlwaysStoppedAnimation<Color>(color)`.
-  ///
-  /// If null, the progress indicator is rendered with the current theme's
-  /// [ThemeData.accentColor].
-  final Animation<Color> valueColor;
-
-  Color _getValueColor(BuildContext context) =>
-      valueColor?.value ?? Theme.of(context).accentColor;
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(PercentProperty('value', value,
-        showName: false, ifNull: '<indeterminate>'));
-  }
-}
