@@ -411,3 +411,6 @@ if you define pull Container hegith with dragOffset, you need set notificationDr
 ```dart
   key.currentState.show(notificationDragOffset: maxDragOffset);
  ```
+# ☕️Buy me a coffee
+
+![img](http://zmtzawqlp.gitee.io/my_images/images/qrcode.png)
