@@ -5,8 +5,10 @@
 const List<String> routeNames = <String>[
   'fluttercandies://PullToRefreshAppbar',
   'fluttercandies://PullToRefreshCandies',
+  'fluttercandies://PullToRefreshChat',
   'fluttercandies://PullToRefreshHeader',
   'fluttercandies://PullToRefreshImage',
+  'fluttercandies://demogrouppage',
   'fluttercandies://mainpage',
 ];
 
@@ -20,6 +22,8 @@ class Routes {
   /// [routeName] : 'PullToRefreshAppbar'
   ///
   /// [description] : 'Show how to use pull to refresh notification to build a pull refresh appbar'
+  ///
+  /// [exts] : {group: Simple, order: 0}
   static const String fluttercandiesPullToRefreshAppbar =
       'fluttercandies://PullToRefreshAppbar';
 
@@ -30,8 +34,22 @@ class Routes {
   /// [routeName] : 'PullToRefreshCandies'
   ///
   /// [description] : 'Show how to use pull to refresh notification to build a pull candies animation'
+  ///
+  /// [exts] : {group: Complex, order: 1}
   static const String fluttercandiesPullToRefreshCandies =
       'fluttercandies://PullToRefreshCandies';
+
+  /// 'Show how to use pull to refresh notification for reverse list like chat list.'
+  ///
+  /// [name] : 'fluttercandies://PullToRefreshChat'
+  ///
+  /// [routeName] : 'PullToRefreshChat'
+  ///
+  /// [description] : 'Show how to use pull to refresh notification for reverse list like chat list.'
+  ///
+  /// [exts] : {group: Complex, order: 2}
+  static const String fluttercandiesPullToRefreshChat =
+      'fluttercandies://PullToRefreshChat';
 
   /// 'Show how to use pull to refresh notification to build a pull refresh header,and hide it on refresh done'
   ///
@@ -40,6 +58,8 @@ class Routes {
   /// [routeName] : 'PullToRefreshHeader'
   ///
   /// [description] : 'Show how to use pull to refresh notification to build a pull refresh header,and hide it on refresh done'
+  ///
+  /// [exts] : {group: Complex, order: 0}
   static const String fluttercandiesPullToRefreshHeader =
       'fluttercandies://PullToRefreshHeader';
 
@@ -50,8 +70,22 @@ class Routes {
   /// [routeName] : 'PullToRefreshImage'
   ///
   /// [description] : 'Show how to use pull to refresh notification to build a pull refresh image'
+  ///
+  /// [exts] : {group: Simple, order: 1}
   static const String fluttercandiesPullToRefreshImage =
       'fluttercandies://PullToRefreshImage';
+
+  /// 'DemoGroupPage'
+  ///
+  /// [name] : 'fluttercandies://demogrouppage'
+  ///
+  /// [routeName] : 'DemoGroupPage'
+  ///
+  /// [arguments] : [keyValue]
+  ///
+  /// [argumentTypes] : [List<DemoRouteResult>]
+  static const String fluttercandiesDemogrouppage =
+      'fluttercandies://demogrouppage';
 
   /// 'MainPage'
   ///

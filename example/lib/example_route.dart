@@ -5,11 +5,12 @@
 
 import 'package:flutter/widgets.dart';
 
+import 'pages/complex/pull_to_refresh_candies.dart';
+import 'pages/complex/pull_to_refresh_chat.dart';
+import 'pages/complex/pull_to_refresh_header.dart';
 import 'pages/main_page.dart';
-import 'pages/pull_to_refresh_appbar.dart';
-import 'pages/pull_to_refresh_candies.dart';
-import 'pages/pull_to_refresh_header.dart';
-import 'pages/pull_to_refresh_image.dart';
+import 'pages/simple/pull_to_refresh_appbar.dart';
+import 'pages/simple/pull_to_refresh_image.dart';
 
 // ignore_for_file: argument_type_not_assignable
 RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
@@ -21,6 +22,7 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         routeName: 'PullToRefreshAppbar',
         description:
             'Show how to use pull to refresh notification to build a pull refresh appbar',
+        exts: <String, dynamic>{'group': 'Simple', 'order': 0},
       );
     case 'fluttercandies://PullToRefreshCandies':
       return RouteResult(
@@ -29,6 +31,16 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         routeName: 'PullToRefreshCandies',
         description:
             'Show how to use pull to refresh notification to build a pull candies animation',
+        exts: <String, dynamic>{'group': 'Complex', 'order': 1},
+      );
+    case 'fluttercandies://PullToRefreshChat':
+      return RouteResult(
+        name: name,
+        widget: PullToRefreshChat(),
+        routeName: 'PullToRefreshChat',
+        description:
+            'Show how to use pull to refresh notification for reverse list like chat list.',
+        exts: <String, dynamic>{'group': 'Complex', 'order': 2},
       );
     case 'fluttercandies://PullToRefreshHeader':
       return RouteResult(
@@ -37,6 +49,7 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         routeName: 'PullToRefreshHeader',
         description:
             'Show how to use pull to refresh notification to build a pull refresh header,and hide it on refresh done',
+        exts: <String, dynamic>{'group': 'Complex', 'order': 0},
       );
     case 'fluttercandies://PullToRefreshImage':
       return RouteResult(
@@ -45,6 +58,15 @@ RouteResult getRouteResult({String name, Map<String, dynamic> arguments}) {
         routeName: 'PullToRefreshImage',
         description:
             'Show how to use pull to refresh notification to build a pull refresh image',
+        exts: <String, dynamic>{'group': 'Simple', 'order': 1},
+      );
+    case 'fluttercandies://demogrouppage':
+      return RouteResult(
+        name: name,
+        widget: DemoGroupPage(
+          keyValue: arguments['keyValue'],
+        ),
+        routeName: 'DemoGroupPage',
       );
     case 'fluttercandies://mainpage':
       return RouteResult(

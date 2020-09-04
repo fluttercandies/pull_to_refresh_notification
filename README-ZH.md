@@ -10,13 +10,15 @@
 
 [掘金](https://juejin.im/post/5bebcc44f265da61682aedb8)
 
-- [pull_to_refresh_notification](#pulltorefreshnotification)
+- [pull_to_refresh_notification](#pull_to_refresh_notification)
 - [RefreshIndicatorMode](#refreshindicatormode)
 - [Sample 1 appbar](#sample-1-appbar)
 - [Sample 2 header](#sample-2-header)
 - [Sample 3 image](#sample-3-image)
 - [Sample 4 candies](#sample-4-candies)
+- [Sample 5 candies](#sample-5-candies)
 - [refresh with code](#refresh-with-code)
+- [☕️Buy me a coffee](#️buy-me-a-coffee)
 
 # RefreshIndicatorMode
 
@@ -69,9 +71,6 @@ enum RefreshIndicatorMode {
 }
     
      Widget buildPulltoRefreshAppbar(PullToRefreshScrollNotificationInfo info) {
-        print(info?.mode);
-        print(info?.dragOffset);
-    //    print("------------");
         var action = Padding(
           child: info?.refreshWiget ?? Icon(Icons.more_horiz),
           padding: EdgeInsets.all(15.0),
@@ -97,8 +96,6 @@ enum RefreshIndicatorMode {
                 )));
       }
 ```
-
-[see demo](https://github.com/fluttercandies/pull_to_refresh_notification/blob/master/example/lib/pages/pull_to_refresh_appbar.dart)
 
 # Sample 2 header
 创建下拉刷新头，你可以轻松处理状态
@@ -141,9 +138,7 @@ enum RefreshIndicatorMode {
    }
  
    Widget buildPulltoRefreshHeader(PullToRefreshScrollNotificationInfo info) {
-     //print(info?.mode);
-     //print(info?.dragOffset);
- //    print("------------");
+
      var offset = info?.dragOffset ?? 0.0;
      var mode = info?.mode;
      Widget refreshWiget = Container();
@@ -205,25 +200,7 @@ enum RefreshIndicatorMode {
      );
    }
  
-   bool success = false;
-   Future<bool> onRefresh() {
-     final Completer<bool> completer = new Completer<bool>();
-     new Timer(const Duration(seconds: 2), () {
-       completer.complete(success);
-       success = true;
-     });
-     return completer.future.then((bool success) {
-       if (success) {
-         setState(() {
-           listlength += 10;
-         });
-       }
-       return success;
-     });
-   }
 ```
-
-[see demo](https://github.com/fluttercandies/pull_to_refresh_notification/blob/master/example/lib/pages/pull_to_refresh_header.dart)
 
 # Sample 3 image
 
@@ -232,7 +209,6 @@ enum RefreshIndicatorMode {
 ![](https://github.com/fluttercandies/Flutter_Candies/tree/master/gif/pull_to_refresh/image.gif)
 ```dart
  Widget build(BuildContext context) {
-     // TODO: implement build
      return PullToRefreshNotification(
        color: Colors.blue,
        pullBackOnRefresh: true,
@@ -314,7 +290,6 @@ enum RefreshIndicatorMode {
      );
    }
 ```
-[see demo](https://github.com/fluttercandies/pull_to_refresh_notification/blob/master/example/lib/pages/pull_to_refresh_image.dart)
 
 # Sample 4 candies
 
@@ -392,7 +367,63 @@ enum RefreshIndicatorMode {
   }
 ```
 
-[see demo](https://github.com/fluttercandies/pull_to_refresh_notification/blob/master/example/lib/pages/pull_to_refresh_candies.dart)
+# Sample 5 candies
+在一个反转的列表里面怎么实现下拉刷新(比如聊天列表)
+
+```dart
+        PullToRefreshNotification(
+          onRefresh: onRefresh,
+          maxDragOffset: 48,
+          armedDragUpCancel: false,
+          reverse: true,
+          child: Column(
+            children: <Widget>[
+              PullToRefreshContainer(
+                  (PullToRefreshScrollNotificationInfo info) {
+                final double offset = info?.dragOffset ?? 0.0;
+
+                //load history data
+                return Container(
+                  height: offset,
+                  child: const RefreshProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    strokeWidth: 2.0,
+                  ),
+                );
+              }),
+              Expanded(
+                child: ExtendedListView.builder(
+                  ///in case list is not full screen and remove ios Bouncing
+                  physics: const AlwaysScrollableClampingScrollPhysics(),
+                  reverse: true,
+                  extendedListDelegate:
+                      const ExtendedListDelegate(closeToTrailing: true),
+                  itemBuilder: (BuildContext context, int index) {
+                    List<Widget> children = <Widget>[
+                      Text('$index. ${chats[index]}'),
+                      Image.asset(
+                        'assets/avatar.jpg',
+                        width: 30,
+                        height: 30,
+                      ),
+                    ];
+                    if (index % 2 == 0) {
+                      children = children.reversed.toList();
+                    }
+                    return Row(
+                      mainAxisAlignment: index % 2 == 0
+                          ? MainAxisAlignment.start
+                          : MainAxisAlignment.end,
+                      children: children,
+                    );
+                  },
+                  itemCount: chats.length,
+                ),
+              )
+            ],
+          ),
+        ),
+```
 
 # refresh with code
 

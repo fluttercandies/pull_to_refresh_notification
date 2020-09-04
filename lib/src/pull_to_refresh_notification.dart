@@ -58,6 +58,7 @@ class PullToRefreshNotification extends StatefulWidget {
     this.notificationPredicate = defaultNotificationPredicate,
     this.armedDragUpCancel = true,
     this.pullBackCurve = Curves.linear,
+    this.reverse = false,
   })  : assert(child != null),
         assert(onRefresh != null),
         assert(notificationPredicate != null),
@@ -95,6 +96,22 @@ class PullToRefreshNotification extends StatefulWidget {
 
   //use in case much ScrollNotification from child
   final bool Function(ScrollNotification notification) notificationPredicate;
+
+  /// The [reverse] should be the same as the list in [PullToRefreshNotification].
+  ///
+  /// Whether the scroll view scrolls in the reading direction.
+  ///
+  /// For example, if the reading direction is left-to-right and
+  /// [scrollDirection] is [Axis.horizontal], then the scroll view scrolls from
+  /// left to right when [reverse] is false and from right to left when
+  /// [reverse] is true.
+  ///
+  /// Similarly, if [scrollDirection] is [Axis.vertical], then the scroll view
+  /// scrolls from top to bottom when [reverse] is false and from bottom to top
+  /// when [reverse] is true.
+  ///
+  /// Defaults to false.
+  final bool reverse;
 
   @override
   PullToRefreshNotificationState createState() =>
@@ -200,7 +217,9 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
           math.max(notification.metrics.viewportDimension, maxContainerExtent);
     }
     if (notification is ScrollStartNotification &&
-        notification.metrics.extentBefore == 0.0 &&
+        (widget.reverse
+            ? notification.metrics.extentAfter == 0.0
+            : notification.metrics.extentBefore == 0.0) &&
         _refreshIndicatorMode == null &&
         _start(notification.metrics.axisDirection)) {
       //setState(() {
@@ -211,10 +230,10 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     bool indicatorAtTopNow;
     switch (notification.metrics.axisDirection) {
       case AxisDirection.down:
-        indicatorAtTopNow = true;
+        indicatorAtTopNow = !widget.reverse;
         break;
       case AxisDirection.up:
-        indicatorAtTopNow = false;
+        indicatorAtTopNow = widget.reverse;
         break;
       case AxisDirection.left:
       case AxisDirection.right:
@@ -228,7 +247,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     } else if (notification is ScrollUpdateNotification) {
       if (_refreshIndicatorMode == RefreshIndicatorMode.drag ||
           _refreshIndicatorMode == RefreshIndicatorMode.armed) {
-        if (notification.metrics.extentBefore > 0.0) {
+        if (!widget.reverse && notification.metrics.extentBefore > 0.0) {
           if (_refreshIndicatorMode == RefreshIndicatorMode.armed &&
               !widget.armedDragUpCancel) {
             _show();
@@ -236,7 +255,12 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
             _dismiss(RefreshIndicatorMode.canceled);
           }
         } else {
-          _notificationDragOffset -= notification.scrollDelta;
+          if (widget.reverse) {
+            _notificationDragOffset += notification.scrollDelta;
+          } else {
+            _notificationDragOffset -= notification.scrollDelta;
+          }
+
           _checkDragOffset(maxContainerExtent);
         }
       }
@@ -250,7 +274,11 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     } else if (notification is OverscrollNotification) {
       if (_refreshIndicatorMode == RefreshIndicatorMode.drag ||
           _refreshIndicatorMode == RefreshIndicatorMode.armed) {
-        _notificationDragOffset -= notification.overscroll / 2.0;
+        if (widget.reverse) {
+          _notificationDragOffset += notification.overscroll / 2.0;
+        } else {
+          _notificationDragOffset -= notification.overscroll / 2.0;
+        }
         _checkDragOffset(maxContainerExtent);
       }
     } else if (notification is ScrollEndNotification) {
@@ -287,10 +315,10 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     assert(_notificationDragOffset == null);
     switch (direction) {
       case AxisDirection.down:
-        _isIndicatorAtTop = true;
+        _isIndicatorAtTop = !widget.reverse;
         break;
       case AxisDirection.up:
-        _isIndicatorAtTop = false;
+        _isIndicatorAtTop = widget.reverse;
         break;
       case AxisDirection.left:
       case AxisDirection.right:

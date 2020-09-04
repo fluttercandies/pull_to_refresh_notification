@@ -1,7 +1,6 @@
 name: pull_to_refresh_notification
 description: Flutter plugin for building pull to refresh effects with PullToRefreshNotification and PullToRefreshContainer quickly.
-version: 0.3.5
-author: zmtzawqlp <zmtzawqlp@live.com>
+version: 0.4.0
 homepage: https://github.com/fluttercandies/pull_to_refresh_notification
 
 
