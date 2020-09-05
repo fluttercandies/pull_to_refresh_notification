@@ -76,9 +76,9 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
 
   Widget buildPulltoRefreshImage(PullToRefreshScrollNotificationInfo info) {
     final double offset = info?.dragOffset ?? 0.0;
-    Widget refreshWiget = Container();
-    if (info?.refreshWiget != null) {
-      refreshWiget = info.refreshWiget;
+    Widget refreshWidget = Container();
+    if (info?.refreshWidget != null) {
+      refreshWidget = info.refreshWidget;
     }
 
     return SliverToBoxAdapter(
@@ -97,7 +97,7 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                refreshWiget,
+                refreshWidget,
                 Container(
                   padding: const EdgeInsets.only(left: 5.0),
                   alignment: Alignment.center,

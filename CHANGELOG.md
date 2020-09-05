@@ -1,3 +1,7 @@
+## 1.0.0
+
+* breaking change: Typo refreshWiget.
+
 ## 0.4.0
 
 * add reverse property to support reverse list.

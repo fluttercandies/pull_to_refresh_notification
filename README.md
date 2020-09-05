@@ -71,7 +71,7 @@ build appbar to pull to refresh with PullToRefreshContainer
     
      Widget buildPulltoRefreshAppbar(PullToRefreshScrollNotificationInfo info) {
         var action = Padding(
-          child: info?.refreshWiget ?? Icon(Icons.more_horiz),
+          child: info?.refreshWidget ?? Icon(Icons.more_horiz),
           padding: EdgeInsets.all(15.0),
         );
         var offset = info?.dragOffset ?? 0.0;
@@ -140,12 +140,12 @@ and you can easy to handle the status in pulling.
    Widget buildPulltoRefreshHeader(PullToRefreshScrollNotificationInfo info) {
      var offset = info?.dragOffset ?? 0.0;
      var mode = info?.mode;
-     Widget refreshWiget = Container();
+     Widget refreshWidget = Container();
      //it should more than 18, so that RefreshProgressIndicator can be shown fully
-     if (info?.refreshWiget != null &&
+     if (info?.refreshWidget != null &&
          offset > 18.0 &&
          mode != RefreshIndicatorMode.error) {
-       refreshWiget = info.refreshWiget;
+       refreshWidget = info.refreshWidget;
      }
  
      Widget child = null;
@@ -180,7 +180,7 @@ and you can easy to handle the status in pulling.
          child: Row(
            mainAxisAlignment: MainAxisAlignment.center,
            children: <Widget>[
-             refreshWiget,
+             refreshWidget,
              Container(
                padding: EdgeInsets.only(left: 5.0),
                alignment: Alignment.center,
@@ -242,15 +242,15 @@ build zoom image to pull to refresh with using PullToRefreshContainer.
    
    Widget buildPulltoRefreshImage(PullToRefreshScrollNotificationInfo info) {
      var offset = info?.dragOffset ?? 0.0;
-     Widget refreshWiget = Container();
-     if (info?.refreshWiget != null) {
-       refreshWiget = Material(
+     Widget refreshWidget = Container();
+     if (info?.refreshWidget != null) {
+       refreshWidget = Material(
          type: MaterialType.circle,
          color: Theme.of(context).canvasColor,
          elevation: 2.0,
          child: Padding(
            padding: EdgeInsets.all(12),
-           child: info.refreshWiget,
+           child: info.refreshWidget,
          ),
        );
      }
@@ -271,7 +271,7 @@ build zoom image to pull to refresh with using PullToRefreshContainer.
              child: Row(
                mainAxisAlignment: MainAxisAlignment.center,
                children: <Widget>[
-                 refreshWiget,
+                 refreshWidget,
                  Container(
                    padding: EdgeInsets.only(left: 5.0),
                    alignment: Alignment.center,

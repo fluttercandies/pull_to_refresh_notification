@@ -556,10 +556,10 @@ bool defaultNotificationPredicate(ScrollNotification notification) {
 
 class PullToRefreshScrollNotificationInfo {
   PullToRefreshScrollNotificationInfo(this.mode, this.dragOffset,
-      this.refreshWiget, this.pullToRefreshNotificationState);
+      this.refreshWidget, this.pullToRefreshNotificationState);
   final RefreshIndicatorMode mode;
   final double dragOffset;
-  final Widget refreshWiget;
+  final Widget refreshWidget;
   final PullToRefreshNotificationState pullToRefreshNotificationState;
 }
 

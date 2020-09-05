@@ -85,7 +85,7 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
         expandedHeight: 200.0 + offset,
         actions: <Widget>[
           UnconstrainedBox(
-            child: info?.refreshWiget ?? const Icon(Icons.more_horiz),
+            child: info?.refreshWidget ?? const Icon(Icons.more_horiz),
           )
         ],
         flexibleSpace: FlexibleSpaceBar(
