@@ -422,8 +422,10 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
             completer.complete();
             if (success) {
               _dismiss(RefreshIndicatorMode.done);
-            } else
-              _refreshIndicatorMode = RefreshIndicatorMode.error;
+            } else {
+              _dismiss(RefreshIndicatorMode.canceled);
+              // _refreshIndicatorMode = RefreshIndicatorMode.error;
+            }
           }
         });
       }
