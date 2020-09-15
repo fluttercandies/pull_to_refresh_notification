@@ -31,7 +31,9 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
         PullToRefreshNotification(
           color: Colors.blue,
           pullBackOnRefresh: true,
+          maxDragOffset: 80,
           onRefresh: onRefresh,
+          pullBackDuration: const Duration(seconds: 1),
           key: key,
           child: CustomScrollView(
             ///in case list is not full screen and remove ios Bouncing

@@ -31,6 +31,8 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
           PullToRefreshNotification(
             color: Colors.blue,
             pullBackOnRefresh: true,
+            maxDragOffset: 80,
+            pullBackDuration: const Duration(seconds: 1),
             onRefresh: onRefresh,
             key: key,
             child: CustomScrollView(

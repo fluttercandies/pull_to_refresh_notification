@@ -36,7 +36,7 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
           onRefresh: onRefresh,
           maxDragOffset: 80,
           armedDragUpCancel: false,
-          pullBackCurve: TestCurve(),
+          //pullBackCurve: TestCurve(),
           pullBackDuration: const Duration(seconds: 2),
           key: key,
           child: CustomScrollView(
@@ -110,7 +110,6 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
     } else {
       child = widget.PullToRefreshHeader(info, dateTimeNow);
     }
-
     return SliverToBoxAdapter(
       child: child,
     );

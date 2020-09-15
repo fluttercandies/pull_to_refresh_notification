@@ -1,3 +1,6 @@
+## 1.1.1
+
+* fix color is not working in ios.
 
 ## 1.1.0
 
