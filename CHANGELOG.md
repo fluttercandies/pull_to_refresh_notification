@@ -1,3 +1,8 @@
+
+## 1.1.0
+
+* allow custom duration to be passed to the widget for the pullback animation
+
 ## 1.0.0
 
 * breaking change: Typo refreshWiget.

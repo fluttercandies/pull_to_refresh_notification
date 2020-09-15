@@ -59,8 +59,13 @@ class PullToRefreshNotification extends StatefulWidget {
     this.armedDragUpCancel = true,
     this.pullBackCurve = Curves.linear,
     this.reverse = false,
+    this.pullBackDuration = const Duration(milliseconds: 400),
   })  : assert(child != null),
         assert(onRefresh != null),
+        assert(pullBackCurve != null),
+        assert(pullBackDuration != null),
+        assert(armedDragUpCancel != null),
+        assert(pullBackOnRefresh != null),
         assert(notificationPredicate != null),
         super(key: key);
 
@@ -85,13 +90,13 @@ class PullToRefreshNotification extends StatefulWidget {
   /// /// [ThemeData.accentColor] by default. only for android
   final Color color;
 
-  //whether start pull back animation when refresh.
+  /// Whether start pull back animation when refresh.
   final bool pullBackOnRefresh;
 
-  //the max drag offset
+  /// The max drag offset
   final double maxDragOffset;
 
-  //The curve to use for the pullback animation
+  /// The curve to use for the pullback animation
   final Curve pullBackCurve;
 
   //use in case much ScrollNotification from child
@@ -112,6 +117,9 @@ class PullToRefreshNotification extends StatefulWidget {
   ///
   /// Defaults to false.
   final bool reverse;
+
+  //The duration to use for the pullback animation
+  final Duration pullBackDuration;
 
   @override
   PullToRefreshNotificationState createState() =>
@@ -243,7 +251,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     if (indicatorAtTopNow != _isIndicatorAtTop) {
       if (_refreshIndicatorMode == RefreshIndicatorMode.drag ||
           _refreshIndicatorMode == RefreshIndicatorMode.armed)
-        _dismiss(RefreshIndicatorMode.canceled);
+        dismiss(RefreshIndicatorMode.canceled);
     } else if (notification is ScrollUpdateNotification) {
       if (_refreshIndicatorMode == RefreshIndicatorMode.drag ||
           _refreshIndicatorMode == RefreshIndicatorMode.armed) {
@@ -252,7 +260,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
               !widget.armedDragUpCancel) {
             _show();
           } else {
-            _dismiss(RefreshIndicatorMode.canceled);
+            dismiss(RefreshIndicatorMode.canceled);
           }
         } else {
           if (widget.reverse) {
@@ -287,7 +295,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
           _show();
           break;
         case RefreshIndicatorMode.drag:
-          _dismiss(RefreshIndicatorMode.canceled);
+          dismiss(RefreshIndicatorMode.canceled);
           break;
         default:
           // do nothing
@@ -353,7 +361,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   }
 
   // Stop showing the refresh indicator.
-  Future<void> _dismiss(RefreshIndicatorMode newMode) async {
+  Future<void> dismiss(RefreshIndicatorMode newMode) async {
     await Future<void>.value();
     // This can only be called from _show() when refreshing and
     // _handleScrollNotification in response to a ScrollEndNotification or
@@ -421,7 +429,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
               _refreshIndicatorMode == RefreshIndicatorMode.refresh) {
             completer.complete();
             if (success) {
-              _dismiss(RefreshIndicatorMode.done);
+              dismiss(RefreshIndicatorMode.done);
             } else
               _refreshIndicatorMode = RefreshIndicatorMode.error;
           }
@@ -542,8 +550,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     _pullBackFactor = _pullBackController.drive(_pullBackTween);
     _pullBackFactor.addListener(pullBackListener);
     _pullBackController.animateTo(1.0,
-        duration: const Duration(milliseconds: 400),
-        curve: widget.pullBackCurve);
+        duration: widget.pullBackDuration, curve: widget.pullBackCurve);
     //_DragOffset=0.0;
   }
 }

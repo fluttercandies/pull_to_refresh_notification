@@ -36,6 +36,8 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
           onRefresh: onRefresh,
           maxDragOffset: 80,
           armedDragUpCancel: false,
+          pullBackCurve: TestCurve(),
+          pullBackDuration: const Duration(seconds: 2),
           key: key,
           child: CustomScrollView(
             ///in case list is not full screen and remove ios Bouncing
@@ -130,5 +132,15 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
 
       return success;
     });
+  }
+}
+
+class TestCurve extends Curve {
+  @override
+  double transform(double t) {
+    if (t < 1) {
+      return 0;
+    }
+    return t;
   }
 }
