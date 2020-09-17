@@ -255,7 +255,9 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     } else if (notification is ScrollUpdateNotification) {
       if (_refreshIndicatorMode == RefreshIndicatorMode.drag ||
           _refreshIndicatorMode == RefreshIndicatorMode.armed) {
-        if (!widget.reverse && notification.metrics.extentBefore > 0.0) {
+        if (!widget.reverse &&
+            notification.metrics.extentBefore > 0.0 &&
+            notification.metrics.pixels >= 0) {
           if (_refreshIndicatorMode == RefreshIndicatorMode.armed &&
               !widget.armedDragUpCancel) {
             _show();

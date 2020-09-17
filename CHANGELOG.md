@@ -1,3 +1,7 @@
+## 1.1.2
+
+* fix error when use center key in list.
+
 ## 1.1.1
 
 * fix color is not working in ios.
@@ -17,7 +21,7 @@
 ## 0.3.5
 
 * fix analysis_options
-  
+
 ## 0.3.4
 
 * web support
@@ -37,7 +41,7 @@
 
 ## 0.3.0
 
-* fix issue that AlwaysScrollableClampingScrollPhysics is not working in new flutter version 
+* fix issue that AlwaysScrollableClampingScrollPhysics is not working in new flutter version
 
 ## 0.2.4
 
