@@ -49,9 +49,9 @@ class PullToRefreshNotification extends StatefulWidget {
   /// non-null. The default
   /// [displacement] is 40.0 logical pixels.
   const PullToRefreshNotification({
-    Key key,
-    @required this.child,
-    @required this.onRefresh,
+    Key? key,
+    required this.child,
+    required this.onRefresh,
     this.color,
     this.pullBackOnRefresh = false,
     this.maxDragOffset,
@@ -60,14 +60,7 @@ class PullToRefreshNotification extends StatefulWidget {
     this.pullBackCurve = Curves.linear,
     this.reverse = false,
     this.pullBackDuration = const Duration(milliseconds: 400),
-  })  : assert(child != null),
-        assert(onRefresh != null),
-        assert(pullBackCurve != null),
-        assert(pullBackDuration != null),
-        assert(armedDragUpCancel != null),
-        assert(pullBackOnRefresh != null),
-        assert(notificationPredicate != null),
-        super(key: key);
+  }) : super(key: key);
 
   //Dragged far enough that an up event will run the onRefresh callback.
   //then user drag up,whether should cancel refresh
@@ -88,13 +81,13 @@ class PullToRefreshNotification extends StatefulWidget {
 
   /// The progress indicator's foreground color. The current theme's
   /// /// [ThemeData.accentColor] by default. only for android
-  final Color color;
+  final Color? color;
 
   /// Whether start pull back animation when refresh.
   final bool pullBackOnRefresh;
 
   /// The max drag offset
-  final double maxDragOffset;
+  final double? maxDragOffset;
 
   /// The curve to use for the pullback animation
   final Curve pullBackCurve;
@@ -135,29 +128,29 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   Stream<PullToRefreshScrollNotificationInfo> get onNoticed =>
       _onNoticed.stream;
 
-  AnimationController _positionController;
-  AnimationController _scaleController;
-  Animation<double> _scaleFactor;
-  Animation<double> _value;
-  Animation<Color> _valueColor;
+  late AnimationController _positionController;
+  late AnimationController _scaleController;
+  late Animation<double> _scaleFactor;
+  late Animation<double> _value;
+  Animation<Color?>? _valueColor;
 
-  AnimationController _pullBackController;
-  Animation<double> _pullBackFactor;
+  late AnimationController _pullBackController;
+  Animation<double>? _pullBackFactor;
 
-  RefreshIndicatorMode _mode;
-  RefreshIndicatorMode get _refreshIndicatorMode => _mode;
-  set _refreshIndicatorMode(RefreshIndicatorMode value) {
+  RefreshIndicatorMode? _mode;
+  RefreshIndicatorMode? get _refreshIndicatorMode => _mode;
+  set _refreshIndicatorMode(RefreshIndicatorMode? value) {
     if (_mode != value) {
       _mode = value;
       _onInnerNoticed();
     }
   }
 
-  Future<void> _pendingRefreshFuture;
-  bool _isIndicatorAtTop;
-  double _dragOffset;
-  double get _notificationDragOffset => _dragOffset;
-  set _notificationDragOffset(double value) {
+  Future<void>? _pendingRefreshFuture;
+  bool? _isIndicatorAtTop;
+  double? _dragOffset;
+  double? get _notificationDragOffset => _dragOffset;
+  set _notificationDragOffset(double? value) {
     if (value != null) {
       value = math.max(
           0.0, math.min(value, widget.maxDragOffset ?? double.maxFinite));
@@ -235,7 +228,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       //});
       return false;
     }
-    bool indicatorAtTopNow;
+    bool? indicatorAtTopNow;
     switch (notification.metrics.axisDirection) {
       case AxisDirection.down:
         indicatorAtTopNow = !widget.reverse;
@@ -266,9 +259,11 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
           }
         } else {
           if (widget.reverse) {
-            _notificationDragOffset += notification.scrollDelta;
+            _notificationDragOffset =
+                _notificationDragOffset ?? 0 + notification.scrollDelta!;
           } else {
-            _notificationDragOffset -= notification.scrollDelta;
+            _notificationDragOffset =
+                _notificationDragOffset ?? 0 - notification.scrollDelta!;
           }
 
           _checkDragOffset(maxContainerExtent);
@@ -285,9 +280,11 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       if (_refreshIndicatorMode == RefreshIndicatorMode.drag ||
           _refreshIndicatorMode == RefreshIndicatorMode.armed) {
         if (widget.reverse) {
-          _notificationDragOffset += notification.overscroll / 2.0;
+          _notificationDragOffset =
+              _notificationDragOffset ?? 0 + notification.overscroll / 2.0;
         } else {
-          _notificationDragOffset -= notification.overscroll / 2.0;
+          _notificationDragOffset =
+              _notificationDragOffset ?? 0 - notification.overscroll / 2.0;
         }
         _checkDragOffset(maxContainerExtent);
       }
@@ -347,18 +344,18 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   void _checkDragOffset(double containerExtent) {
     assert(_refreshIndicatorMode == RefreshIndicatorMode.drag ||
         _refreshIndicatorMode == RefreshIndicatorMode.armed);
-    double newValue = _notificationDragOffset /
+    double newValue = _notificationDragOffset! /
         (containerExtent * _kDragContainerExtentPercentage);
     if (widget.maxDragOffset != null) {
-      newValue = _notificationDragOffset / widget.maxDragOffset;
+      newValue = _notificationDragOffset! / widget.maxDragOffset!;
     }
     if (_refreshIndicatorMode == RefreshIndicatorMode.armed)
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
     _positionController.value =
-        newValue.clamp(0.0, 1.0) as double; // this triggers various rebuilds
+        newValue.clamp(0.0, 1.0); // this triggers various rebuilds
 
     if (_refreshIndicatorMode == RefreshIndicatorMode.drag &&
-        _valueColor.value.alpha == 0xFF)
+        _valueColor!.value!.alpha == 0xFF)
       _refreshIndicatorMode = RefreshIndicatorMode.armed;
   }
 
@@ -406,26 +403,13 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
             duration: _kIndicatorSnapDuration)
         .then<void>((void value) {
       if (mounted && _refreshIndicatorMode == RefreshIndicatorMode.snap) {
-        assert(widget.onRefresh != null);
         // setState(() {
         // Show the indeterminate progress indicator.
         _refreshIndicatorMode = RefreshIndicatorMode.refresh;
         //});
 
         final Future<bool> refreshResult = widget.onRefresh();
-        assert(() {
-          if (refreshResult == null)
-            FlutterError.reportError(FlutterErrorDetails(
-              exception: FlutterError('The onRefresh callback returned null.\n'
-                  'The RefreshIndicator onRefresh callback must return a Future.'),
-              context: ErrorDescription('when calling onRefresh'),
-              library: 'material library',
-            ));
-          return true;
-        }());
-        if (refreshResult == null) {
-          return;
-        }
+
         refreshResult.then((bool success) {
           if (mounted &&
               _refreshIndicatorMode == RefreshIndicatorMode.refresh) {
@@ -456,7 +440,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   /// When initiated in this manner, the refresh indicator is independent of any
   /// actual scroll view. It defaults to showing the indicator at the top. To
   /// show it at the bottom, set `atTop` to false.
-  Future<void> show({bool atTop = true, double notificationDragOffset}) {
+  Future<void>? show({bool atTop = true, double? notificationDragOffset}) {
     if (_refreshIndicatorMode != RefreshIndicatorMode.refresh &&
         _refreshIndicatorMode != RefreshIndicatorMode.snap) {
       if (_refreshIndicatorMode == null)
@@ -483,7 +467,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   }
 
   void _onInnerNoticed() {
-    if ((_dragOffset != null && _dragOffset > 0.0) &&
+    if ((_dragOffset != null && _dragOffset! > 0.0) &&
         ((_refreshIndicatorMode == RefreshIndicatorMode.done &&
                 !widget.pullBackOnRefresh) ||
             (_refreshIndicatorMode == RefreshIndicatorMode.refresh &&
@@ -501,7 +485,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     }
   }
 
-  Widget _getRefreshWidget() {
+  Widget? _getRefreshWidget() {
     if (_refreshIndicatorMode == null) {
       return null;
     }
@@ -512,7 +496,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       scale: _scaleFactor,
       child: AnimatedBuilder(
         animation: _positionController,
-        builder: (BuildContext context, Widget child) {
+        builder: (BuildContext context, Widget? child) {
           final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
           if (isIOS) {
@@ -535,8 +519,8 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
 
   void pullBackListener() {
     //print(_pullBackFactor.value);
-    if (_dragOffset != _pullBackFactor.value) {
-      _dragOffset = _pullBackFactor.value;
+    if (_dragOffset != _pullBackFactor!.value) {
+      _dragOffset = _pullBackFactor!.value;
       _onNoticed.add(PullToRefreshScrollNotificationInfo(
           _refreshIndicatorMode, _dragOffset, _getRefreshWidget(), this));
       if (_dragOffset == 0.0) {
@@ -554,7 +538,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     _pullBackFactor?.removeListener(pullBackListener);
     _pullBackController.reset();
     _pullBackFactor = _pullBackController.drive(_pullBackTween);
-    _pullBackFactor.addListener(pullBackListener);
+    _pullBackFactor!.addListener(pullBackListener);
     _pullBackController.animateTo(1.0,
         duration: widget.pullBackDuration, curve: widget.pullBackCurve);
     //_DragOffset=0.0;
@@ -570,9 +554,9 @@ bool defaultNotificationPredicate(ScrollNotification notification) {
 class PullToRefreshScrollNotificationInfo {
   PullToRefreshScrollNotificationInfo(this.mode, this.dragOffset,
       this.refreshWidget, this.pullToRefreshNotificationState);
-  final RefreshIndicatorMode mode;
-  final double dragOffset;
-  final Widget refreshWidget;
+  final RefreshIndicatorMode? mode;
+  final double? dragOffset;
+  final Widget? refreshWidget;
   final PullToRefreshNotificationState pullToRefreshNotificationState;
 }
 
@@ -586,7 +570,7 @@ class PullToRefreshContainer extends StatefulWidget {
 class _PullToRefreshContainerState extends State<PullToRefreshContainer> {
   @override
   Widget build(BuildContext context) {
-    final PullToRefreshNotificationState ss =
+    final PullToRefreshNotificationState? ss =
         context.findAncestorStateOfType<PullToRefreshNotificationState>();
     return StreamBuilder<PullToRefreshScrollNotificationInfo>(
       builder: (BuildContext c,
@@ -599,7 +583,7 @@ class _PullToRefreshContainerState extends State<PullToRefreshContainer> {
 }
 
 typedef PullToRefreshContainerBuilder = Widget Function(
-    PullToRefreshScrollNotificationInfo info);
+    PullToRefreshScrollNotificationInfo? info);
 
 const double _kDefaultIndicatorRadius = 10.0;
 
@@ -617,13 +601,11 @@ const Color _kActiveTickColor = CupertinoDynamicColor.withBrightness(
 class CupertinoActivityIndicator extends StatefulWidget {
   /// Creates an iOS-style activity indicator that spins clockwise.
   const CupertinoActivityIndicator({
-    Key key,
+    Key? key,
     this.animating = true,
     this.radius = _kDefaultIndicatorRadius,
     this.activeColor,
-  })  : assert(animating != null),
-        assert(radius != null),
-        assert(radius > 0),
+  })  : assert(radius > 0),
         super(key: key);
 
   /// Whether the activity indicator is running its animation.
@@ -636,7 +618,7 @@ class CupertinoActivityIndicator extends StatefulWidget {
   /// Defaults to 10px. Must be positive and cannot be null.
   final double radius;
 
-  final Color activeColor;
+  final Color? activeColor;
 
   @override
   _CupertinoActivityIndicatorState createState() =>
@@ -645,7 +627,7 @@ class CupertinoActivityIndicator extends StatefulWidget {
 
 class _CupertinoActivityIndicatorState extends State<CupertinoActivityIndicator>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  AnimationController? _controller;
 
   @override
   void initState() {
@@ -656,7 +638,7 @@ class _CupertinoActivityIndicatorState extends State<CupertinoActivityIndicator>
     );
 
     if (widget.animating) {
-      _controller.repeat();
+      _controller!.repeat();
     }
   }
 
@@ -665,15 +647,15 @@ class _CupertinoActivityIndicatorState extends State<CupertinoActivityIndicator>
     super.didUpdateWidget(oldWidget);
     if (widget.animating != oldWidget.animating) {
       if (widget.animating)
-        _controller.repeat();
+        _controller!.repeat();
       else
-        _controller.stop();
+        _controller!.stop();
     }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller!.dispose();
     super.dispose();
   }
 
@@ -716,10 +698,10 @@ const List<int> _alphaValues = <int>[
 
 class _CupertinoActivityIndicatorPainter extends CustomPainter {
   _CupertinoActivityIndicatorPainter({
-    @required this.position,
-    @required this.activeColor,
-    double radius,
-  })  : tickFundamentalRRect = RRect.fromLTRBXY(
+    required this.position,
+    required this.activeColor,
+    required double radius,
+  })   : tickFundamentalRRect = RRect.fromLTRBXY(
           -radius,
           radius / _kDefaultIndicatorRadius,
           -radius / 2.0,
@@ -729,7 +711,7 @@ class _CupertinoActivityIndicatorPainter extends CustomPainter {
         ),
         super(repaint: position);
 
-  final Animation<double> position;
+  final Animation<double>? position;
   final RRect tickFundamentalRRect;
   final Color activeColor;
 
@@ -740,7 +722,7 @@ class _CupertinoActivityIndicatorPainter extends CustomPainter {
     canvas.save();
     canvas.translate(size.width / 2.0, size.height / 2.0);
 
-    final int activeTick = (_kTickCount * position.value).floor();
+    final int activeTick = (_kTickCount * position!.value).floor();
 
     for (int i = 0; i < _kTickCount; ++i) {
       final int t = (i + activeTick) % _kTickCount;

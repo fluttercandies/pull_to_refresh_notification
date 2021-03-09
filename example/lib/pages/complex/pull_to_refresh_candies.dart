@@ -2,8 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
-import 'package:ff_annotation_route/ff_annotation_route.dart';
-
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 @FFRoute(
   name: 'fluttercandies://PullToRefreshCandies',
   routeName: 'PullToRefreshCandies',
@@ -179,7 +178,6 @@ class _RefreshLogoState extends State<RefreshLogo>
         ],
       ),
       child: Stack(
-        overflow: Overflow.visible,
         children: <Widget>[
           Positioned(
             bottom: 0.0,

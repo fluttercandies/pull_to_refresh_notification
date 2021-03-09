@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
-import 'package:ff_annotation_route/ff_annotation_route.dart';
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 
 @FFRoute(
   name: 'fluttercandies://PullToRefreshImage',

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 ///in case list is not full screen and remove ios Bouncing
 class AlwaysScrollableClampingScrollPhysics extends ClampingScrollPhysics {
-  const AlwaysScrollableClampingScrollPhysics({ScrollPhysics parent})
+  const AlwaysScrollableClampingScrollPhysics({ScrollPhysics? parent})
       : super(parent: parent);
 
   @override
-  AlwaysScrollableClampingScrollPhysics applyTo(ScrollPhysics ancestor) {
+  AlwaysScrollableClampingScrollPhysics applyTo(ScrollPhysics? ancestor) {
     return AlwaysScrollableClampingScrollPhysics(parent: buildParent(ancestor));
   }
 

@@ -1,9 +1,9 @@
+import 'package:example/example_route.dart';
 import 'package:example/example_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:ff_annotation_route/ff_annotation_route.dart';
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:collection/collection.dart';
-import '../example_route.dart';
 import '../example_routes.dart' as example_routes;
 
 @FFRoute(
@@ -18,9 +18,9 @@ class MainPage extends StatelessWidget {
     routeNames.remove(Routes.fluttercandiesDemogrouppage);
     routesGroup.addAll(groupBy<DemoRouteResult, String>(
         routeNames
-            .map<RouteResult>((String name) => getRouteResult(name: name))
-            .where((RouteResult element) => element.exts != null)
-            .map<DemoRouteResult>((RouteResult e) => DemoRouteResult(e))
+            .map<FFRouteSettings>((String name) => getRouteSettings(name: name))
+            .where((FFRouteSettings element) => element.exts != null)
+            .map<DemoRouteResult>((FFRouteSettings e) => DemoRouteResult(e))
             .toList()
               ..sort((DemoRouteResult a, DemoRouteResult b) =>
                   b.group.compareTo(a.group)),
@@ -40,7 +40,7 @@ class MainPage extends StatelessWidget {
           ButtonTheme(
             minWidth: 0.0,
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: FlatButton(
+            child: TextButton(
               child: const Text(
                 'Github',
                 style: TextStyle(
@@ -58,7 +58,7 @@ class MainPage extends StatelessWidget {
           ButtonTheme(
             padding: const EdgeInsets.only(right: 10.0),
             minWidth: 0.0,
-            child: FlatButton(
+            child: TextButton(
               child:
                   Image.network('https://pub.idqqimg.com/wpa/images/group.png'),
               onPressed: () {
@@ -163,5 +163,5 @@ class DemoRouteResult {
 
   final int order;
   final String group;
-  final RouteResult routeResult;
+  final FFRouteSettings routeResult;
 }
