@@ -1,3 +1,7 @@
+## 2.0.1
+
+* fix null-safety error
+
 ## 2.0.0
 
 * support null-safety

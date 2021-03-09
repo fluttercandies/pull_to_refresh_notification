@@ -260,10 +260,10 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
         } else {
           if (widget.reverse) {
             _notificationDragOffset =
-                _notificationDragOffset ?? 0 + notification.scrollDelta!;
+                (_notificationDragOffset ?? 0) + notification.scrollDelta!;
           } else {
             _notificationDragOffset =
-                _notificationDragOffset ?? 0 - notification.scrollDelta!;
+                (_notificationDragOffset ?? 0) - notification.scrollDelta!;
           }
 
           _checkDragOffset(maxContainerExtent);
@@ -281,10 +281,10 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
           _refreshIndicatorMode == RefreshIndicatorMode.armed) {
         if (widget.reverse) {
           _notificationDragOffset =
-              _notificationDragOffset ?? 0 + notification.overscroll / 2.0;
+              (_notificationDragOffset ?? 0) + notification.overscroll / 2.0;
         } else {
           _notificationDragOffset =
-              _notificationDragOffset ?? 0 - notification.overscroll / 2.0;
+              (_notificationDragOffset ?? 0) - notification.overscroll / 2.0;
         }
         _checkDragOffset(maxContainerExtent);
       }

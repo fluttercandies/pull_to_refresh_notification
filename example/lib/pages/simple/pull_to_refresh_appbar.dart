@@ -106,9 +106,11 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
 
   Future<bool> onRefresh() {
     return Future<bool>.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        listlength += 10;
-      });
+      if (mounted) {
+        setState(() {
+          listlength += 10;
+        });
+      }
       return true;
     });
   }
