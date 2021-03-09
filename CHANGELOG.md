@@ -1,3 +1,6 @@
+## 2.0.0-non-null-safety
+
+* non-null-safety
 ## 1.1.2
 
 * fix error when use center key in list.
