@@ -1,3 +1,6 @@
+## 2.1.0-non-null-safety
+
+* add [PullToRefreshNotification.pullBackOnError] to support pull back when refresh failed.
 ## 2.0.0-non-null-safety
 
 * non-null-safety
