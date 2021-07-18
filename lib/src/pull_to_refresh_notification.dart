@@ -59,6 +59,7 @@ class PullToRefreshNotification extends StatefulWidget {
     this.armedDragUpCancel = true,
     this.pullBackCurve = Curves.linear,
     this.reverse = false,
+    this.pullBackOnError = false,
     this.pullBackDuration = const Duration(milliseconds: 400),
   }) : super(key: key);
 
@@ -113,6 +114,9 @@ class PullToRefreshNotification extends StatefulWidget {
 
   //The duration to use for the pullback animation
   final Duration pullBackDuration;
+
+  /// Whether start pull back animation when refresh failed.
+  final bool pullBackOnError;
 
   @override
   PullToRefreshNotificationState createState() =>
@@ -468,11 +472,13 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
 
   void _onInnerNoticed() {
     if ((_dragOffset != null && _dragOffset! > 0.0) &&
-        ((_refreshIndicatorMode == RefreshIndicatorMode.done &&
-                !widget.pullBackOnRefresh) ||
-            (_refreshIndicatorMode == RefreshIndicatorMode.refresh &&
-                widget.pullBackOnRefresh) ||
-            _refreshIndicatorMode == RefreshIndicatorMode.canceled)) {
+            ((_refreshIndicatorMode == RefreshIndicatorMode.done &&
+                    !widget.pullBackOnRefresh) ||
+                (_refreshIndicatorMode == RefreshIndicatorMode.refresh &&
+                    widget.pullBackOnRefresh) ||
+                _refreshIndicatorMode == RefreshIndicatorMode.canceled) ||
+        (_refreshIndicatorMode == RefreshIndicatorMode.error &&
+            widget.pullBackOnError)) {
       _pullBack();
       return;
     }
@@ -701,7 +707,7 @@ class _CupertinoActivityIndicatorPainter extends CustomPainter {
     required this.position,
     required this.activeColor,
     required double radius,
-  })   : tickFundamentalRRect = RRect.fromLTRBXY(
+  })  : tickFundamentalRRect = RRect.fromLTRBXY(
           -radius,
           radius / _kDefaultIndicatorRadius,
           -radius / 2.0,

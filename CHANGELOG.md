@@ -1,3 +1,7 @@
+## 2.1.0
+
+* add [PullToRefreshNotification.pullBackOnError] to support pull back when refresh failed.
+
 ## 2.0.1
 
 * fix null-safety error
