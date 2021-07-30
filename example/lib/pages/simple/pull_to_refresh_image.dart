@@ -67,7 +67,7 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
             child: FloatingActionButton(
               child: const Icon(Icons.refresh),
               onPressed: () {
-                key.currentState.show();
+                key.currentState.show(notificationDragOffset: 80);
               },
             ),
           )
