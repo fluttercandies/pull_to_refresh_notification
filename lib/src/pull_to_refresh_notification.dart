@@ -61,6 +61,7 @@ class PullToRefreshNotification extends StatefulWidget {
     this.reverse = false,
     this.pullBackOnError = false,
     this.pullBackDuration = const Duration(milliseconds: 400),
+    this.refreshOffset,
   }) : super(key: key);
 
   //Dragged far enough that an up event will run the onRefresh callback.
@@ -117,6 +118,9 @@ class PullToRefreshNotification extends StatefulWidget {
 
   /// Whether start pull back animation when refresh failed.
   final bool pullBackOnError;
+
+  /// The offset to keep when it is refreshing
+  final double? refreshOffset;
 
   @override
   PullToRefreshNotificationState createState() =>
@@ -407,22 +411,32 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
             duration: _kIndicatorSnapDuration)
         .then<void>((void value) {
       if (mounted && _refreshIndicatorMode == RefreshIndicatorMode.snap) {
-        // setState(() {
-        // Show the indeterminate progress indicator.
-        _refreshIndicatorMode = RefreshIndicatorMode.refresh;
-        //});
+        final Completer<void> pullBackCompleter = Completer<void>();
+        if (widget.refreshOffset != null) {
+          _pullBack(end: widget.refreshOffset!)
+              .whenComplete(() => pullBackCompleter.complete());
+        } else {
+          pullBackCompleter.complete();
+        }
 
-        final Future<bool> refreshResult = widget.onRefresh();
+        pullBackCompleter.future.whenComplete(() {
+          // setState(() {
+          // Show the indeterminate progress indicator.
+          _refreshIndicatorMode = RefreshIndicatorMode.refresh;
+          //});
 
-        refreshResult.then((bool success) {
-          if (mounted &&
-              _refreshIndicatorMode == RefreshIndicatorMode.refresh) {
-            completer.complete();
-            if (success) {
-              dismiss(RefreshIndicatorMode.done);
-            } else
-              _refreshIndicatorMode = RefreshIndicatorMode.error;
-          }
+          final Future<bool> refreshResult = widget.onRefresh();
+
+          refreshResult.then((bool success) {
+            if (mounted &&
+                _refreshIndicatorMode == RefreshIndicatorMode.refresh) {
+              completer.complete();
+              if (success) {
+                dismiss(RefreshIndicatorMode.done);
+              } else
+                _refreshIndicatorMode = RefreshIndicatorMode.error;
+            }
+          });
         });
       }
     });
@@ -538,14 +552,14 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     }
   }
 
-  void _pullBack() {
+  TickerFuture _pullBack({double? end}) {
     final Animatable<double> _pullBackTween =
-        Tween<double>(begin: _notificationDragOffset ?? 0.0, end: 0.0);
+        Tween<double>(begin: _notificationDragOffset ?? 0.0, end: end ?? 0.0);
     _pullBackFactor?.removeListener(pullBackListener);
     _pullBackController.reset();
     _pullBackFactor = _pullBackController.drive(_pullBackTween);
     _pullBackFactor!.addListener(pullBackListener);
-    _pullBackController.animateTo(1.0,
+    return _pullBackController.animateTo(1.0,
         duration: widget.pullBackDuration, curve: widget.pullBackCurve);
     //_DragOffset=0.0;
   }
