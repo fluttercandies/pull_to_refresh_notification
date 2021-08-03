@@ -1,3 +1,7 @@
+## 2.2.0-non-null-safety
+
+* add [PullToRefreshNotification.refreshOffset] to support pull back to designative offset when it is refreshing.
+  
 ## 2.1.0-non-null-safety
 
 * add [PullToRefreshNotification.pullBackOnError] to support pull back when refresh failed.
