@@ -1,9 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:example/example_route.dart';
 import 'package:example/example_routes.dart';
-import 'package:flutter/material.dart';
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:collection/collection.dart';
+
 import '../example_routes.dart' as example_routes;
 
 @FFRoute(

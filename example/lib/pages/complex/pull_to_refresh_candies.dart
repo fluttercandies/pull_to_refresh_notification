@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'dart:math' as math;
+
+import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
-import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 @FFRoute(
   name: 'fluttercandies://PullToRefreshCandies',
   routeName: 'PullToRefreshCandies',

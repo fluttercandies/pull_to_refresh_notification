@@ -1,5 +1,4 @@
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'example_route.dart';
 import 'example_routes.dart';
@@ -28,10 +27,10 @@ class MyApp extends StatelessWidget {
               return ffRouteSettings;
             }
             return ffRouteSettings.copyWith(
-                widget: CommonWidget(
-              child: ffRouteSettings.widget,
-              title: ffRouteSettings.routeName,
-            ));
+                builder: () => CommonWidget(
+                      child: ffRouteSettings.builder(),
+                      title: ffRouteSettings.routeName,
+                    ));
           },
         );
       },

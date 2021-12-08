@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
-import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 import 'package:example/common/widget/push_to_refresh_header.dart' as widget;
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
+import 'package:flutter/material.dart';
+import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
 @FFRoute(
   name: 'fluttercandies://PullToRefreshHeader',
   routeName: 'PullToRefreshHeader',

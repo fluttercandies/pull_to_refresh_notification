@@ -22,7 +22,7 @@ dependencies:
   extended_list: any
   extended_sliver: ^1.0.1
 
-  ff_annotation_route_library: any
+  ff_annotation_route_library: ^3.0.0
   flutter:
     sdk: flutter
   intl: any
