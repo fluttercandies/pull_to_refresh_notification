@@ -1,3 +1,7 @@
+## 2.3.0
+
+* add [PullToRefreshNotification.reachToRefreshOffset] to support be dragged far enough that an up event will run the onRefresh callback.
+
 ## 2.2.0
 
 * add [PullToRefreshNotification.refreshOffset] to support pull back to designative offset when it is refreshing.

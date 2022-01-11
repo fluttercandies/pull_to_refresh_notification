@@ -62,6 +62,7 @@ class PullToRefreshNotification extends StatefulWidget {
     this.pullBackOnError = false,
     this.pullBackDuration = const Duration(milliseconds: 400),
     this.refreshOffset,
+    this.reachToRefreshOffset,
   }) : super(key: key);
 
   //Dragged far enough that an up event will run the onRefresh callback.
@@ -121,6 +122,9 @@ class PullToRefreshNotification extends StatefulWidget {
 
   /// The offset to keep when it is refreshing
   final double? refreshOffset;
+
+  /// The offset to be dragged far enough that an up event will run the onRefresh callback.
+  final double? reachToRefreshOffset;
 
   @override
   PullToRefreshNotificationState createState() =>
@@ -352,10 +356,14 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   void _checkDragOffset(double containerExtent) {
     assert(_refreshIndicatorMode == RefreshIndicatorMode.drag ||
         _refreshIndicatorMode == RefreshIndicatorMode.armed);
-    double newValue = _notificationDragOffset! /
-        (containerExtent * _kDragContainerExtentPercentage);
-    if (widget.maxDragOffset != null) {
+    late double newValue;
+    if (widget.reachToRefreshOffset != null) {
+      newValue = _notificationDragOffset! / widget.reachToRefreshOffset!;
+    } else if (widget.maxDragOffset != null) {
       newValue = _notificationDragOffset! / widget.maxDragOffset!;
+    } else {
+      newValue = _notificationDragOffset! /
+          (containerExtent * _kDragContainerExtentPercentage);
     }
     if (_refreshIndicatorMode == RefreshIndicatorMode.armed)
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
