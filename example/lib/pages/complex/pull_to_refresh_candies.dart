@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import 'package:ff_annotation_route_library/ff_annotation_route_library.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_notification/pull_to_refresh_notification.dart';
+
 @FFRoute(
   name: 'fluttercandies://PullToRefreshCandies',
   routeName: 'PullToRefreshCandies',
@@ -108,7 +109,7 @@ class RefreshLogo extends StatefulWidget {
     @required this.offset,
   }) : super(key: key);
   final double offset;
-  final RefreshIndicatorMode mode;
+  final PullToRefreshIndicatorMode mode;
 
   @override
   _RefreshLogoState createState() => _RefreshLogoState();
@@ -160,11 +161,11 @@ class _RefreshLogoState extends State<RefreshLogo>
     if (widget.mode == null) {
       return Container();
     }
-    if (!animating && widget.mode == RefreshIndicatorMode.refresh) {
+    if (!animating && widget.mode == PullToRefreshIndicatorMode.refresh) {
       startAnimate();
     } else if (widget.offset < 10.0 &&
         animating &&
-        widget.mode != RefreshIndicatorMode.refresh) {
+        widget.mode != PullToRefreshIndicatorMode.refresh) {
       stopAnimate();
     }
     return Container(

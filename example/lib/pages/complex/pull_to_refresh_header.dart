@@ -86,10 +86,10 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
 
   Widget buildPulltoRefreshHeader(PullToRefreshScrollNotificationInfo info) {
     final double offset = info?.dragOffset ?? 0.0;
-    final RefreshIndicatorMode mode = info?.mode;
+    final PullToRefreshIndicatorMode mode = info?.mode;
 
     Widget child;
-    if (mode == RefreshIndicatorMode.error) {
+    if (mode == PullToRefreshIndicatorMode.error) {
       child = GestureDetector(
           onTap: () {
             // refreshNotification;

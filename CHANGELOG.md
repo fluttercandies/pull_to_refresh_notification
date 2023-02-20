@@ -1,3 +1,11 @@
+## 3.0.0
+
+* breaking change:
+
+rename 'RefreshIndicatorMode' to 'PullToRefreshIndicatorMode'
+and 'CupertinoActivityIndicator' to 'PullToRefreshCupertinoActivityIndicator' to
+avoid conflict to cupertino.dart
+
 ## 2.3.0
 
 * add [PullToRefreshNotification.reachToRefreshOffset] to support be dragged far enough that an up event will run the onRefresh callback.

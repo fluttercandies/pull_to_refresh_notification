@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/cupertino.dart' hide CupertinoActivityIndicator;
+import 'package:flutter/cupertino.dart' show CupertinoDynamicColor;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,7 +32,7 @@ typedef RefreshCallback = Future<bool> Function();
 
 // The state machine moves through these modes only when the scrollable
 // identified by scrollableKey has been scrolled to its min or max limit.
-enum RefreshIndicatorMode {
+enum PullToRefreshIndicatorMode {
   drag, // Pointer is down.
   armed, // Dragged far enough that an up event will run the onRefresh callback.
   snap, // Animating to the indicator's final "displacement".
@@ -149,9 +149,9 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   late AnimationController _pullBackController;
   Animation<double>? _pullBackFactor;
 
-  RefreshIndicatorMode? _mode;
-  RefreshIndicatorMode? get _refreshIndicatorMode => _mode;
-  set _refreshIndicatorMode(RefreshIndicatorMode? value) {
+  PullToRefreshIndicatorMode? _mode;
+  PullToRefreshIndicatorMode? get _refreshIndicatorMode => _mode;
+  set _refreshIndicatorMode(PullToRefreshIndicatorMode? value) {
     if (_mode != value) {
       _mode = value;
       _onInnerNoticed();
@@ -236,7 +236,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
         _refreshIndicatorMode == null &&
         _start(notification.metrics.axisDirection)) {
       //setState(() {
-      _mode = RefreshIndicatorMode.drag;
+      _mode = PullToRefreshIndicatorMode.drag;
       //});
       return false;
     }
@@ -254,20 +254,20 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
         break;
     }
     if (indicatorAtTopNow != _isIndicatorAtTop) {
-      if (_refreshIndicatorMode == RefreshIndicatorMode.drag ||
-          _refreshIndicatorMode == RefreshIndicatorMode.armed)
-        dismiss(RefreshIndicatorMode.canceled);
+      if (_refreshIndicatorMode == PullToRefreshIndicatorMode.drag ||
+          _refreshIndicatorMode == PullToRefreshIndicatorMode.armed)
+        dismiss(PullToRefreshIndicatorMode.canceled);
     } else if (notification is ScrollUpdateNotification) {
-      if (_refreshIndicatorMode == RefreshIndicatorMode.drag ||
-          _refreshIndicatorMode == RefreshIndicatorMode.armed) {
+      if (_refreshIndicatorMode == PullToRefreshIndicatorMode.drag ||
+          _refreshIndicatorMode == PullToRefreshIndicatorMode.armed) {
         if (!widget.reverse &&
             notification.metrics.extentBefore > 0.0 &&
             notification.metrics.pixels >= 0) {
-          if (_refreshIndicatorMode == RefreshIndicatorMode.armed &&
+          if (_refreshIndicatorMode == PullToRefreshIndicatorMode.armed &&
               !widget.armedDragUpCancel) {
             _show();
           } else {
-            dismiss(RefreshIndicatorMode.canceled);
+            dismiss(PullToRefreshIndicatorMode.canceled);
           }
         } else {
           if (widget.reverse) {
@@ -281,7 +281,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
           _checkDragOffset(maxContainerExtent);
         }
       }
-      if (_refreshIndicatorMode == RefreshIndicatorMode.armed &&
+      if (_refreshIndicatorMode == PullToRefreshIndicatorMode.armed &&
           notification.dragDetails == null) {
         // On iOS start the refresh when the Scrollable bounces back from the
         // overscroll (ScrollNotification indicating this don't have dragDetails
@@ -289,8 +289,8 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
         _show();
       }
     } else if (notification is OverscrollNotification) {
-      if (_refreshIndicatorMode == RefreshIndicatorMode.drag ||
-          _refreshIndicatorMode == RefreshIndicatorMode.armed) {
+      if (_refreshIndicatorMode == PullToRefreshIndicatorMode.drag ||
+          _refreshIndicatorMode == PullToRefreshIndicatorMode.armed) {
         if (widget.reverse) {
           _notificationDragOffset =
               (_notificationDragOffset ?? 0) + notification.overscroll / 2.0;
@@ -302,11 +302,11 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       }
     } else if (notification is ScrollEndNotification) {
       switch (_refreshIndicatorMode) {
-        case RefreshIndicatorMode.armed:
+        case PullToRefreshIndicatorMode.armed:
           _show();
           break;
-        case RefreshIndicatorMode.drag:
-          dismiss(RefreshIndicatorMode.canceled);
+        case PullToRefreshIndicatorMode.drag:
+          dismiss(PullToRefreshIndicatorMode.canceled);
           break;
         default:
           // do nothing
@@ -321,7 +321,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     if (notification.depth != 0 || !notification.leading) {
       return false;
     }
-    if (_refreshIndicatorMode == RefreshIndicatorMode.drag) {
+    if (_refreshIndicatorMode == PullToRefreshIndicatorMode.drag) {
       notification.disallowGlow();
       return true;
     }
@@ -354,8 +354,8 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   }
 
   void _checkDragOffset(double containerExtent) {
-    assert(_refreshIndicatorMode == RefreshIndicatorMode.drag ||
-        _refreshIndicatorMode == RefreshIndicatorMode.armed);
+    assert(_refreshIndicatorMode == PullToRefreshIndicatorMode.drag ||
+        _refreshIndicatorMode == PullToRefreshIndicatorMode.armed);
     late double newValue;
     if (widget.reachToRefreshOffset != null) {
       newValue = _notificationDragOffset! / widget.reachToRefreshOffset!;
@@ -365,33 +365,33 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       newValue = _notificationDragOffset! /
           (containerExtent * _kDragContainerExtentPercentage);
     }
-    if (_refreshIndicatorMode == RefreshIndicatorMode.armed)
+    if (_refreshIndicatorMode == PullToRefreshIndicatorMode.armed)
       newValue = math.max(newValue, 1.0 / _kDragSizeFactorLimit);
     _positionController.value =
         newValue.clamp(0.0, 1.0); // this triggers various rebuilds
 
-    if (_refreshIndicatorMode == RefreshIndicatorMode.drag &&
+    if (_refreshIndicatorMode == PullToRefreshIndicatorMode.drag &&
         _valueColor!.value!.alpha == 0xFF)
-      _refreshIndicatorMode = RefreshIndicatorMode.armed;
+      _refreshIndicatorMode = PullToRefreshIndicatorMode.armed;
   }
 
   // Stop showing the refresh indicator.
-  Future<void> dismiss(RefreshIndicatorMode newMode) async {
+  Future<void> dismiss(PullToRefreshIndicatorMode newMode) async {
     await Future<void>.value();
     // This can only be called from _show() when refreshing and
     // _handleScrollNotification in response to a ScrollEndNotification or
     // direction change.
-    assert(newMode == RefreshIndicatorMode.canceled ||
-        newMode == RefreshIndicatorMode.done);
+    assert(newMode == PullToRefreshIndicatorMode.canceled ||
+        newMode == PullToRefreshIndicatorMode.done);
     //setState(() {
     _refreshIndicatorMode = newMode;
     //});
     switch (_refreshIndicatorMode) {
-      case RefreshIndicatorMode.done:
+      case PullToRefreshIndicatorMode.done:
         await _scaleController.animateTo(1.0,
             duration: _kIndicatorScaleDuration);
         break;
-      case RefreshIndicatorMode.canceled:
+      case PullToRefreshIndicatorMode.canceled:
         await _positionController.animateTo(0.0,
             duration: _kIndicatorScaleDuration);
         break;
@@ -409,16 +409,16 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   }
 
   void _show() {
-    assert(_refreshIndicatorMode != RefreshIndicatorMode.refresh);
-    assert(_refreshIndicatorMode != RefreshIndicatorMode.snap);
+    assert(_refreshIndicatorMode != PullToRefreshIndicatorMode.refresh);
+    assert(_refreshIndicatorMode != PullToRefreshIndicatorMode.snap);
     final Completer<void> completer = Completer<void>();
     _pendingRefreshFuture = completer.future;
-    _refreshIndicatorMode = RefreshIndicatorMode.snap;
+    _refreshIndicatorMode = PullToRefreshIndicatorMode.snap;
     _positionController
         .animateTo(1.0 / _kDragSizeFactorLimit,
             duration: _kIndicatorSnapDuration)
         .then<void>((void value) {
-      if (mounted && _refreshIndicatorMode == RefreshIndicatorMode.snap) {
+      if (mounted && _refreshIndicatorMode == PullToRefreshIndicatorMode.snap) {
         final Completer<void> pullBackCompleter = Completer<void>();
         if (widget.refreshOffset != null) {
           _pullBack(end: widget.refreshOffset!)
@@ -430,19 +430,19 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
         pullBackCompleter.future.whenComplete(() {
           // setState(() {
           // Show the indeterminate progress indicator.
-          _refreshIndicatorMode = RefreshIndicatorMode.refresh;
+          _refreshIndicatorMode = PullToRefreshIndicatorMode.refresh;
           //});
 
           final Future<bool> refreshResult = widget.onRefresh();
 
           refreshResult.then((bool success) {
             if (mounted &&
-                _refreshIndicatorMode == RefreshIndicatorMode.refresh) {
+                _refreshIndicatorMode == PullToRefreshIndicatorMode.refresh) {
               completer.complete();
               if (success) {
-                dismiss(RefreshIndicatorMode.done);
+                dismiss(PullToRefreshIndicatorMode.done);
               } else
-                _refreshIndicatorMode = RefreshIndicatorMode.error;
+                _refreshIndicatorMode = PullToRefreshIndicatorMode.error;
             }
           });
         });
@@ -467,8 +467,8 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
   /// actual scroll view. It defaults to showing the indicator at the top. To
   /// show it at the bottom, set `atTop` to false.
   Future<void>? show({bool atTop = true, double? notificationDragOffset}) {
-    if (_refreshIndicatorMode != RefreshIndicatorMode.refresh &&
-        _refreshIndicatorMode != RefreshIndicatorMode.snap) {
+    if (_refreshIndicatorMode != PullToRefreshIndicatorMode.refresh &&
+        _refreshIndicatorMode != PullToRefreshIndicatorMode.snap) {
       if (_refreshIndicatorMode == null)
         _start(atTop ? AxisDirection.down : AxisDirection.up);
       if (notificationDragOffset != null) {
@@ -494,12 +494,12 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
 
   void _onInnerNoticed() {
     if ((_dragOffset != null && _dragOffset! > 0.0) &&
-            ((_refreshIndicatorMode == RefreshIndicatorMode.done &&
+            ((_refreshIndicatorMode == PullToRefreshIndicatorMode.done &&
                     !widget.pullBackOnRefresh) ||
-                (_refreshIndicatorMode == RefreshIndicatorMode.refresh &&
+                (_refreshIndicatorMode == PullToRefreshIndicatorMode.refresh &&
                     widget.pullBackOnRefresh) ||
-                _refreshIndicatorMode == RefreshIndicatorMode.canceled) ||
-        (_refreshIndicatorMode == RefreshIndicatorMode.error &&
+                _refreshIndicatorMode == PullToRefreshIndicatorMode.canceled) ||
+        (_refreshIndicatorMode == PullToRefreshIndicatorMode.error &&
             widget.pullBackOnError)) {
       _pullBack();
       return;
@@ -518,8 +518,8 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       return null;
     }
     final bool showIndeterminateIndicator =
-        _refreshIndicatorMode == RefreshIndicatorMode.refresh ||
-            _refreshIndicatorMode == RefreshIndicatorMode.done;
+        _refreshIndicatorMode == PullToRefreshIndicatorMode.refresh ||
+            _refreshIndicatorMode == PullToRefreshIndicatorMode.done;
     return ScaleTransition(
       scale: _scaleFactor,
       child: AnimatedBuilder(
@@ -528,7 +528,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
           final bool isIOS = Theme.of(context).platform == TargetPlatform.iOS;
 
           if (isIOS) {
-            return CupertinoActivityIndicator(
+            return PullToRefreshCupertinoActivityIndicator(
               animating: showIndeterminateIndicator,
               radius: 15.0,
               activeColor: widget.color ?? Theme.of(context).accentColor,
@@ -582,7 +582,7 @@ bool defaultNotificationPredicate(ScrollNotification notification) {
 class PullToRefreshScrollNotificationInfo {
   PullToRefreshScrollNotificationInfo(this.mode, this.dragOffset,
       this.refreshWidget, this.pullToRefreshNotificationState);
-  final RefreshIndicatorMode? mode;
+  final PullToRefreshIndicatorMode? mode;
   final double? dragOffset;
   final Widget? refreshWidget;
   final PullToRefreshNotificationState pullToRefreshNotificationState;
@@ -613,8 +613,6 @@ class _PullToRefreshContainerState extends State<PullToRefreshContainer> {
 typedef PullToRefreshContainerBuilder = Widget Function(
     PullToRefreshScrollNotificationInfo? info);
 
-const double _kDefaultIndicatorRadius = 10.0;
-
 // Extracted from iOS 13.2 Beta.
 const Color _kActiveTickColor = CupertinoDynamicColor.withBrightness(
   color: Color(0xFF3C3C44),
@@ -626,15 +624,19 @@ const Color _kActiveTickColor = CupertinoDynamicColor.withBrightness(
 /// See also:
 ///
 ///  * <https://developer.apple.com/ios/human-interface-guidelines/controls/progress-indicators/#activity-indicators>
-class CupertinoActivityIndicator extends StatefulWidget {
+class PullToRefreshCupertinoActivityIndicator extends StatefulWidget {
   /// Creates an iOS-style activity indicator that spins clockwise.
-  const CupertinoActivityIndicator({
+  const PullToRefreshCupertinoActivityIndicator({
     Key? key,
     this.animating = true,
-    this.radius = _kDefaultIndicatorRadius,
+    this.radius =
+        PullToRefreshCupertinoActivityIndicator.defaultIndicatorRadius,
     this.activeColor,
   })  : assert(radius > 0),
         super(key: key);
+
+  /// DefaultIndicatorRadius
+  static const double defaultIndicatorRadius = 10.0;
 
   /// Whether the activity indicator is running its animation.
   ///
@@ -649,11 +651,12 @@ class CupertinoActivityIndicator extends StatefulWidget {
   final Color? activeColor;
 
   @override
-  _CupertinoActivityIndicatorState createState() =>
-      _CupertinoActivityIndicatorState();
+  _PullToRefreshCupertinoActivityIndicatorState createState() =>
+      _PullToRefreshCupertinoActivityIndicatorState();
 }
 
-class _CupertinoActivityIndicatorState extends State<CupertinoActivityIndicator>
+class _PullToRefreshCupertinoActivityIndicatorState
+    extends State<PullToRefreshCupertinoActivityIndicator>
     with SingleTickerProviderStateMixin {
   AnimationController? _controller;
 
@@ -671,7 +674,7 @@ class _CupertinoActivityIndicatorState extends State<CupertinoActivityIndicator>
   }
 
   @override
-  void didUpdateWidget(CupertinoActivityIndicator oldWidget) {
+  void didUpdateWidget(PullToRefreshCupertinoActivityIndicator oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.animating != oldWidget.animating) {
       if (widget.animating)
@@ -731,11 +734,15 @@ class _CupertinoActivityIndicatorPainter extends CustomPainter {
     required double radius,
   })  : tickFundamentalRRect = RRect.fromLTRBXY(
           -radius,
-          radius / _kDefaultIndicatorRadius,
+          radius /
+              PullToRefreshCupertinoActivityIndicator.defaultIndicatorRadius,
           -radius / 2.0,
-          -radius / _kDefaultIndicatorRadius,
-          radius / _kDefaultIndicatorRadius,
-          radius / _kDefaultIndicatorRadius,
+          -radius /
+              PullToRefreshCupertinoActivityIndicator.defaultIndicatorRadius,
+          radius /
+              PullToRefreshCupertinoActivityIndicator.defaultIndicatorRadius,
+          radius /
+              PullToRefreshCupertinoActivityIndicator.defaultIndicatorRadius,
         ),
         super(repaint: position);
 
