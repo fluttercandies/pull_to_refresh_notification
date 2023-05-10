@@ -70,7 +70,7 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
           child: FloatingActionButton(
             child: const Icon(Icons.refresh),
             onPressed: () {
-              key.currentState.show();
+              key.currentState!.show();
             },
           ),
         )
@@ -78,7 +78,7 @@ class _PullToRefreshAppbarState extends State<PullToRefreshAppbar> {
     ));
   }
 
-  Widget buildPulltoRefreshAppbar(PullToRefreshScrollNotificationInfo info) {
+  Widget buildPulltoRefreshAppbar(PullToRefreshScrollNotificationInfo? info) {
     final double offset = info?.dragOffset ?? 0.0;
 
     return SliverAppBar(

@@ -14,9 +14,9 @@ import 'pages/simple/pull_to_refresh_appbar.dart';
 import 'pages/simple/pull_to_refresh_image.dart';
 
 FFRouteSettings getRouteSettings({
-  @required String name,
-  Map<String, dynamic> arguments,
-  PageBuilder notFoundPageBuilder,
+  required String name,
+  Map<String, dynamic>? arguments,
+  PageBuilder? notFoundPageBuilder,
 }) {
   final Map<String, dynamic> safeArguments =
       arguments ?? const <String, dynamic>{};
@@ -78,7 +78,7 @@ FFRouteSettings getRouteSettings({
         builder: () => DemoGroupPage(
           keyValue: asT<MapEntry<String, List<DemoRouteResult>>>(
             safeArguments['keyValue'],
-          ),
+          )!,
         ),
         routeName: 'DemoGroupPage',
       );

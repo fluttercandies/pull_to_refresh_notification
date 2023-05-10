@@ -1,3 +1,7 @@
+## 3.0.1
+
+* remove ThemeData.accentColor
+
 ## 3.0.0
 
 * breaking change:

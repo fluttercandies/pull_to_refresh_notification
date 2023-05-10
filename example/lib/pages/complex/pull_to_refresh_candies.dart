@@ -40,7 +40,7 @@ class _PullToRefreshCandiesState extends State<PullToRefreshCandies> {
               physics: const AlwaysScrollableClampingScrollPhysics(),
               slivers: <Widget>[
                 PullToRefreshContainer(
-                    (PullToRefreshScrollNotificationInfo info) {
+                    (PullToRefreshScrollNotificationInfo? info) {
                   final double offset = info?.dragOffset ?? 0.0;
                   final Widget child = Container(
                     alignment: Alignment.center,
@@ -83,7 +83,7 @@ class _PullToRefreshCandiesState extends State<PullToRefreshCandies> {
             child: FloatingActionButton(
               child: const Icon(Icons.refresh),
               onPressed: () {
-                key.currentState.show(notificationDragOffset: 80);
+                key.currentState!.show(notificationDragOffset: 80);
               },
             ),
           )
@@ -104,12 +104,12 @@ class _PullToRefreshCandiesState extends State<PullToRefreshCandies> {
 
 class RefreshLogo extends StatefulWidget {
   const RefreshLogo({
-    Key key,
-    @required this.mode,
-    @required this.offset,
+    Key? key,
+    required this.mode,
+    required this.offset,
   }) : super(key: key);
   final double offset;
-  final PullToRefreshIndicatorMode mode;
+  final PullToRefreshIndicatorMode? mode;
 
   @override
   _RefreshLogoState createState() => _RefreshLogoState();
@@ -117,9 +117,9 @@ class RefreshLogo extends StatefulWidget {
 
 class _RefreshLogoState extends State<RefreshLogo>
     with TickerProviderStateMixin {
-  AnimationController rotateController;
-  CurvedAnimation rotateCurveAnimation;
-  Animation<double> rotateAnimation;
+  AnimationController? rotateController;
+  late CurvedAnimation rotateCurveAnimation;
+  late Animation<double> rotateAnimation;
   double angle = 0.0;
 
   bool animating = false;
@@ -131,7 +131,7 @@ class _RefreshLogoState extends State<RefreshLogo>
       duration: const Duration(seconds: 3),
     );
     rotateCurveAnimation = CurvedAnimation(
-      parent: rotateController,
+      parent: rotateController!,
       curve: Curves.ease,
     );
     rotateAnimation =
@@ -141,14 +141,13 @@ class _RefreshLogoState extends State<RefreshLogo>
 
   void startAnimate() {
     animating = true;
-    rotateController.repeat();
+    rotateController!.repeat();
   }
 
   void stopAnimate() {
     animating = false;
-    rotateController
-      ..stop()
-      ..reset();
+    rotateController?.stop();
+    rotateController?.reset();
   }
 
   Widget get logo => Image.asset(

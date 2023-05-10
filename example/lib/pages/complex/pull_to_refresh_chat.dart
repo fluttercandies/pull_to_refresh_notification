@@ -39,7 +39,7 @@ class _PullToRefreshChatState extends State<PullToRefreshChat> {
           child: Column(
             children: <Widget>[
               PullToRefreshContainer(
-                  (PullToRefreshScrollNotificationInfo info) {
+                  (PullToRefreshScrollNotificationInfo? info) {
                 final double offset = info?.dragOffset ?? 0.0;
 
                 //loading history data

@@ -12,25 +12,25 @@ double refreshHeight = maxDragOffset / 1.5;
 
 class PullToRefreshHeader extends StatelessWidget {
   const PullToRefreshHeader(this.info, this.lastRefreshTime, {this.color});
-  final PullToRefreshScrollNotificationInfo info;
+  final PullToRefreshScrollNotificationInfo? info;
   final DateTime lastRefreshTime;
-  final Color color;
+  final Color? color;
   @override
   Widget build(BuildContext context) {
     if (info == null) {
       return Container();
     }
     String text = '';
-    if (info.mode == PullToRefreshIndicatorMode.armed) {
+    if (info!.mode == PullToRefreshIndicatorMode.armed) {
       text = 'Release to refresh';
-    } else if (info.mode == PullToRefreshIndicatorMode.refresh ||
-        info.mode == PullToRefreshIndicatorMode.snap) {
+    } else if (info!.mode == PullToRefreshIndicatorMode.refresh ||
+        info!.mode == PullToRefreshIndicatorMode.snap) {
       text = 'Loading...';
-    } else if (info.mode == PullToRefreshIndicatorMode.done) {
+    } else if (info!.mode == PullToRefreshIndicatorMode.done) {
       text = 'Refresh completed.';
-    } else if (info.mode == PullToRefreshIndicatorMode.drag) {
+    } else if (info!.mode == PullToRefreshIndicatorMode.drag) {
       text = 'Pull to refresh';
-    } else if (info.mode == PullToRefreshIndicatorMode.canceled) {
+    } else if (info!.mode == PullToRefreshIndicatorMode.canceled) {
       text = 'Cancel refresh';
     }
 
@@ -40,7 +40,7 @@ class PullToRefreshHeader extends StatelessWidget {
 
     final double dragOffset = info?.dragOffset ?? 0.0;
 
-    final DateTime time = lastRefreshTime ?? DateTime.now();
+    final DateTime time = lastRefreshTime;
     final double top = -hideHeight + dragOffset;
     return Container(
       height: dragOffset,
@@ -103,8 +103,8 @@ class RefreshImage extends StatelessWidget {
         final double imageHeight = image.height.toDouble();
         final double imageWidth = image.width.toDouble();
         final Size size = rect.size;
-        final double y = (1 - min(top / (refreshHeight - hideHeight), 1)) *
-            imageHeight as double;
+        final double y =
+            (1 - min(top / (refreshHeight - hideHeight), 1)) * imageHeight;
 
         canvas.drawImageRect(
             image,

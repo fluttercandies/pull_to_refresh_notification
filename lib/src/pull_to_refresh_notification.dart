@@ -83,7 +83,7 @@ class PullToRefreshNotification extends StatefulWidget {
   final RefreshCallback onRefresh;
 
   /// The progress indicator's foreground color. The current theme's
-  /// /// [ThemeData.accentColor] by default. only for android
+  /// [ThemeData.colorScheme.primary] by default. only for android
   final Color? color;
 
   /// Whether start pull back animation when refresh.
@@ -197,8 +197,9 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     final ThemeData theme = Theme.of(context);
     _valueColor = _positionController.drive(
       ColorTween(
-              begin: (widget.color ?? theme.accentColor).withOpacity(0.0),
-              end: (widget.color ?? theme.accentColor).withOpacity(1.0))
+              begin:
+                  (widget.color ?? theme.colorScheme.primary).withOpacity(0.0),
+              end: (widget.color ?? theme.colorScheme.primary).withOpacity(1.0))
           .chain(CurveTween(
               curve: const Interval(0.0, 1.0 / _kDragSizeFactorLimit))),
     );
@@ -531,7 +532,8 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
             return PullToRefreshCupertinoActivityIndicator(
               animating: showIndeterminateIndicator,
               radius: 15.0,
-              activeColor: widget.color ?? Theme.of(context).accentColor,
+              activeColor:
+                  widget.color ?? Theme.of(context).colorScheme.primary,
             );
           } else {
             return RefreshProgressIndicator(

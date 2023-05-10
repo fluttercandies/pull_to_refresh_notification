@@ -43,15 +43,15 @@ class CommonWidget extends StatelessWidget {
     this.child,
     this.title,
   });
-  final Widget child;
-  final String title;
+  final Widget? child;
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          title,
+          title!,
         ),
       ),
       body: child,

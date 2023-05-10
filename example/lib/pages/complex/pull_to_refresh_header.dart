@@ -76,7 +76,7 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
           child: FloatingActionButton(
             child: const Icon(Icons.refresh),
             onPressed: () {
-              key.currentState.show(notificationDragOffset: 80);
+              key.currentState!.show(notificationDragOffset: 80);
             },
           ),
         )
@@ -84,16 +84,16 @@ class _PullToRefreshHeaderState extends State<PullToRefreshHeader> {
     ));
   }
 
-  Widget buildPulltoRefreshHeader(PullToRefreshScrollNotificationInfo info) {
+  Widget buildPulltoRefreshHeader(PullToRefreshScrollNotificationInfo? info) {
     final double offset = info?.dragOffset ?? 0.0;
-    final PullToRefreshIndicatorMode mode = info?.mode;
+    final PullToRefreshIndicatorMode? mode = info?.mode;
 
     Widget child;
     if (mode == PullToRefreshIndicatorMode.error) {
       child = GestureDetector(
           onTap: () {
             // refreshNotification;
-            info?.pullToRefreshNotificationState?.show();
+            info?.pullToRefreshNotificationState.show();
           },
           child: Container(
             color: Colors.grey,

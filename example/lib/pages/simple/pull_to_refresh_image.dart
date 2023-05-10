@@ -67,7 +67,7 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
             child: FloatingActionButton(
               child: const Icon(Icons.refresh),
               onPressed: () {
-                key.currentState.show();
+                key.currentState!.show();
               },
             ),
           )
@@ -76,11 +76,11 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
     );
   }
 
-  Widget buildPulltoRefreshImage(PullToRefreshScrollNotificationInfo info) {
+  Widget buildPulltoRefreshImage(PullToRefreshScrollNotificationInfo? info) {
     final double offset = info?.dragOffset ?? 0.0;
-    Widget refreshWidget = Container();
+    Widget? refreshWidget = Container();
     if (info?.refreshWidget != null) {
-      refreshWidget = info.refreshWidget;
+      refreshWidget = info!.refreshWidget;
     }
 
     return SliverToBoxAdapter(
@@ -99,7 +99,7 @@ class _PullToRefreshImageState extends State<PullToRefreshImage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                refreshWidget,
+                refreshWidget!,
                 Container(
                   padding: const EdgeInsets.only(left: 5.0),
                   alignment: Alignment.center,
