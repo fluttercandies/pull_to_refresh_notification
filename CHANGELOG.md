@@ -1,3 +1,7 @@
+## 3.1.0
+
+* fix build error: use disallowIndicator instead of disallowGlow
+
 ## 3.0.1
 
 * remove ThemeData.accentColor

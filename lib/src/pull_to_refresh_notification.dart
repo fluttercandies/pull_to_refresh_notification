@@ -323,7 +323,7 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       return false;
     }
     if (_refreshIndicatorMode == PullToRefreshIndicatorMode.drag) {
-      notification.disallowGlow();
+      notification.disallowIndicator();
       return true;
     }
     return false;
