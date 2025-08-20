@@ -1,3 +1,7 @@
+## 3.1.1
+
+* public refreshIndicatorMode and notificationDragOffset of PullToRefreshNotificationState
+
 ## 3.1.0
 
 * fix build error: use disallowIndicator instead of disallowGlow

@@ -158,6 +158,8 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
     }
   }
 
+  PullToRefreshIndicatorMode? get refreshIndicatorMode => _mode;
+
   Future<void>? _pendingRefreshFuture;
   bool? _isIndicatorAtTop;
   double? _dragOffset;
@@ -172,6 +174,8 @@ class PullToRefreshNotificationState extends State<PullToRefreshNotification>
       _onInnerNoticed();
     }
   }
+
+  double? get notificationDragOffset => _dragOffset;
 
   static final Animatable<double> _threeQuarterTween =
       Tween<double>(begin: 0.0, end: 0.75);
